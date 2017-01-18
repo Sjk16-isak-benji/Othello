@@ -1,17 +1,19 @@
 package com.jensen.game.othello.model;
 
 public class Disk extends Piece {
-    private Player owner;
+    private PieceColor color;
 
-    public Disk(Player owner) {
-        this.owner = owner;
+    public Disk(PieceColor color) {
+        this.color = color;
     }
 
-    public Player getOwner() {
-        return owner;
+    public PieceColor getColor() {
+        return color;
     }
 
-    public void setOwner(Player player) {
-        owner = player;
+    public void flip() {
+        PieceColor[] colors = PieceColor.values();
+        int index = (this.color.ordinal() + 1) % colors.length;
+        color = colors[index];
     }
 }

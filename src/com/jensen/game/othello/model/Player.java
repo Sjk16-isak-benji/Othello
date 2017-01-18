@@ -1,31 +1,24 @@
 package com.jensen.game.othello.model;
 
-import java.awt.*;
-
-public class Player {
+public abstract class Player {
     private String name;
-    private Color color;
-    private boolean computerControlled;
+    private AI ai;
 
-    public Player(String name, Color color) {
+    public Player(String name) {
         this.name = name;
-        this.color = color;
-        this.computerControlled = false;
-    }
-
-    public void setComputerControlled(boolean computerControlled) {
-        this.computerControlled = computerControlled;
-    }
-
-    public boolean isComputerControlled() {
-        return this.computerControlled;
     }
 
     public String getName() {
         return name;
     }
 
-    public Color getColor() {
-        return color;
+    public AI getAI() {
+        return ai;
+    }
+
+    public abstract void setComputerControlled(Difficulty difficulty);
+
+    public boolean isComputerControlled() {
+        return ai != null;
     }
 }

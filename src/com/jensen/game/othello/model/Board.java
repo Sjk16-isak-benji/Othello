@@ -55,6 +55,6 @@ public class Board {
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("Cell not found");
     }
 }
