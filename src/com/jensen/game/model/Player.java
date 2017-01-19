@@ -1,4 +1,6 @@
-package com.jensen.game.othello.model;
+package com.jensen.game.model;
+
+import com.jensen.game.inteface.AI;
 
 public abstract class Player {
     private String name;

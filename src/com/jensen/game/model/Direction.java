@@ -1,4 +1,4 @@
-package com.jensen.game.othello.model;
+package com.jensen.game.model;
 
 public enum Direction {
     NORTH(-1, 0),

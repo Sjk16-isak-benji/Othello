@@ -1,5 +1,8 @@
 package com.jensen.game.othello.model;
 
+import com.jensen.game.model.Piece;
+import com.jensen.game.model.PieceColor;
+
 public class Disk extends Piece {
     private PieceColor color;
 
