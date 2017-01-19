@@ -6,6 +6,10 @@ public class Board {
     private Cell[][] cells;
 
     public Board(int width, int height) {
+        if ((width == 0 || height == 0) && width != height) {
+            throw new IllegalArgumentException("Cannot not have only one side of size 0");
+        }
+
         this.width = width;
         this.height = height;
 
@@ -47,6 +51,10 @@ public class Board {
     }
 
     public GridPosition positionOf(Cell cell) {
+        if (cell == null) {
+            throw new IllegalArgumentException("Argument 'cell' is null");
+        }
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (getCell(x, y).equals(cell)) {
