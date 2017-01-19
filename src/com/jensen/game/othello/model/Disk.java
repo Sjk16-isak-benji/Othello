@@ -13,7 +13,7 @@ public class Disk extends Piece {
 
     public void flip() {
         PieceColor[] colors = PieceColor.values();
-        int index = (this.color.ordinal() + 1) % colors.length;
+        int index = (color.ordinal() + 1) % colors.length;
         color = colors[index];
     }
 }
