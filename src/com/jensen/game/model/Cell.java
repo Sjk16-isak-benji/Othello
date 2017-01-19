@@ -5,6 +5,10 @@ public class Cell {
     private Piece piece;
 
     public Cell(Board board) {
+        if (board == null) {
+            throw new IllegalArgumentException("Argument 'board' is null");
+        }
+
         this.board = board;
     }
 
@@ -31,9 +35,13 @@ public class Cell {
     public Cell getAdjacentCell(Direction direction) {
         GridPosition coords = getPosition();
 
-        return board.getCell(
-            coords.getX() + direction.getHorizontalStep(),
-            coords.getY() + direction.getVerticalStep()
-        );
+        try {
+            return board.getCell(
+                coords.getX() + direction.getHorizontalStep(),
+                coords.getY() + direction.getVerticalStep()
+            );
+        } catch (IndexOutOfBoundsException error) {
+            return null;
+        }
     }
 }
