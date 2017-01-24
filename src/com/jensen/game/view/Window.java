@@ -9,9 +9,16 @@ public class Window extends JFrame implements Display {
 
     private View currentView;
 
-    public Window(String title, View view) {
+    public Window(View view) {
+        super();
+        currentView = view;
+        add(currentView.getComponent());
+    }
+
+    public Window(View view, String title) {
         super(title);
         currentView = view;
+        add(currentView.getComponent());
     }
 
     @Override
