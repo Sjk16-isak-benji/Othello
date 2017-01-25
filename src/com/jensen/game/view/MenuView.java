@@ -9,6 +9,11 @@ import java.awt.event.ActionListener;
 public class MenuView extends JPanel implements View {
 
     @Override
+    public void updateMessage(String message) {
+
+    }
+
+    @Override
     public void addMenuButtonListener(ActionListener l) {
 
     }
