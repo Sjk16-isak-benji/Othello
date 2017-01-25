@@ -13,6 +13,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
+/**
+ * The defualt view for a grid game.
+ */
 public class DefualtGameView extends JPanel implements GameView {
 
     private GridPanel gridPanel;
@@ -20,16 +23,29 @@ public class DefualtGameView extends JPanel implements GameView {
     private JLabel titleLabel;
     private JLabel messageLabel;
 
+    /**
+     * Creates a default game view with the title 'A Grid game'.
+     */
     public DefualtGameView() {
         super();
         initPanel("A Grid Game");
     }
 
+    /**
+     * Creates a default game view with name as the title.
+     *
+     * @param name The name of the game.
+     */
     public DefualtGameView(String name) {
         super();
         initPanel(name);
     }
 
+    /**
+     * Initiates the defualt game view panel with a 'header', a grid and a message panel.
+     *
+     * @param name The name of the game, text to be displayed in the header.
+     */
     private void initPanel(String name) {
         gridPanel = new GridPanel();
 
@@ -40,6 +56,13 @@ public class DefualtGameView extends JPanel implements GameView {
     }
 
     //alternativ till att HeadPanel ärver ifrån JPanel
+
+    /**
+     * Initiates and returns the head panel. An alternativ to having the head panel extend JPanel.
+     *
+     * @param name The text to be displayed in the header.
+     * @return A JPanel with a BorderLayout containing a JLabel with name and a menu button.
+     */
     private JPanel initHeadPanel(String name) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -56,6 +79,11 @@ public class DefualtGameView extends JPanel implements GameView {
         return panel;
     }
 
+    /**
+     * Initiates and returns the message panel. An alternativ to having the head panel extend JPanel.
+     *
+     * @return A JPanel with a left aligned FlowLayout containing a JLabel where message will be displayed.
+     */
     private JPanel initMessagePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -68,10 +96,18 @@ public class DefualtGameView extends JPanel implements GameView {
         return panel;
     }
 
+    /**
+     * Sets the text in the title label.
+     * @param text The text to be displayed in the header.
+     */
     public void setTitleText(String text) {
         titleLabel.setText(text);
     }
 
+    /**
+     * Sets the icon in the title label.
+     * @param icon The icon to be displayed in the header.
+     */
     public void setTitleIcon(Icon icon) {
         titleLabel.setIcon(icon);
     }
