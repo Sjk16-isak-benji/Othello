@@ -41,7 +41,7 @@ public class OthelloPlayer extends Player {
     public void setComputerControlled(Difficulty difficulty) {
         switch (difficulty) {
             case EASY:
-                // TODO
+                ai = new DumbOthelloAI(this);
                 break;
             case NORMAL:
                 // TODO
