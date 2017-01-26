@@ -32,7 +32,7 @@ public class DefualtGameView extends JPanel implements GameView {
     }
 
     /**
-     * Creates a default game view with name as the title.
+     * Creates a default game view with name as its title.
      *
      * @param name The name of the game.
      */
@@ -55,12 +55,11 @@ public class DefualtGameView extends JPanel implements GameView {
         add(initMessagePanel(), BorderLayout.PAGE_END);
     }
 
-    //alternativ till att HeadPanel ärver ifrån JPanel
 
     /**
-     * Initiates and returns the head panel. An alternativ to having the head panel extend JPanel.
+     * Initiates and returns the head panel.
      *
-     * @param name The text to be displayed in the header.
+     * @param name The text to be displayed in this header.
      * @return A JPanel with a BorderLayout containing a JLabel with name and a menu button.
      */
     private JPanel initHeadPanel(String name) {
@@ -80,7 +79,7 @@ public class DefualtGameView extends JPanel implements GameView {
     }
 
     /**
-     * Initiates and returns the message panel. An alternativ to having the head panel extend JPanel.
+     * Initiates and returns the message panel.
      *
      * @return A JPanel with a left aligned FlowLayout containing a JLabel where message will be displayed.
      */
@@ -97,16 +96,18 @@ public class DefualtGameView extends JPanel implements GameView {
     }
 
     /**
-     * Sets the text in the title label.
-     * @param text The text to be displayed in the header.
+     * Sets the text in this title label.
+     *
+     * @param text The text to be displayed in this header.
      */
     public void setTitleText(String text) {
         titleLabel.setText(text);
     }
 
     /**
-     * Sets the icon in the title label.
-     * @param icon The icon to be displayed in the header.
+     * Sets the icon in this title label.
+     *
+     * @param icon The icon to be displayed in this header.
      */
     public void setTitleIcon(Icon icon) {
         titleLabel.setIcon(icon);
