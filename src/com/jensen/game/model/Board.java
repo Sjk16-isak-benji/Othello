@@ -11,8 +11,8 @@ public class Board {
     /**
      * Creates a board with of a specific size.
      *
-     * @param width the width of the board.
-     * @param height the height of the board.
+     * @param width  The width of the board.
+     * @param height The height of the board.
      */
     public Board(int width, int height) {
         if ((width == 0 || height == 0) && width != height) {
@@ -41,7 +41,7 @@ public class Board {
     /**
      * Gets the width of this board.
      *
-     * @return the width of this board.
+     * @return The width of this board.
      */
     public int getWidth() {
         return width;
@@ -50,7 +50,7 @@ public class Board {
     /**
      * Gets the height of this board.
      *
-     * @return the height of this board.
+     * @return The height of this board.
      */
     public int getHeight() {
         return height;
@@ -59,7 +59,7 @@ public class Board {
     /**
      * Gets all cells in this board in an one-dimensional array.
      *
-     * @return array of the cells in this board.
+     * @return Array of the cells in this board.
      */
     public Cell[] getCells() {
         Cell[] cells = new Cell[width * height];
@@ -76,9 +76,9 @@ public class Board {
     /**
      * Gets a specific cell.
      *
-     * @param x the column of the cell.
-     * @param y the row of the cell.
-     * @return the cell.
+     * @param x The column of the cell.
+     * @param y The row of the cell.
+     * @return The cell.
      */
     public Cell getCell(int x, int y) {
         return cells[y][x];
@@ -87,8 +87,8 @@ public class Board {
     /**
      * Gets the position of a cell.
      *
-     * @param cell the cell.
-     * @return the position.
+     * @param cell The cell.
+     * @return The position.
      */
     public GridPosition positionOf(Cell cell) {
         if (cell == null) {

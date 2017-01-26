@@ -8,12 +8,13 @@ import com.jensen.game.model.PieceColor;
  * It has a color and may be flipped to switch color.
  */
 public class Disk extends Piece {
+
     private PieceColor color;
 
     /**
      * Creates a disk of a specific color.
      *
-     * @param color the color of the disk.
+     * @param color The color of the disk.
      */
     public Disk(PieceColor color) {
         this.color = color;
@@ -22,7 +23,7 @@ public class Disk extends Piece {
     /**
      * Gets the color of this disk.
      *
-     * @return the color of this disk.
+     * @return The color of this disk.
      */
     public PieceColor getColor() {
         return color;

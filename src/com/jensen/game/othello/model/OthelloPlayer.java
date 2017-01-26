@@ -8,13 +8,14 @@ import com.jensen.game.model.Player;
  * A class representing a othello/reversi player.
  */
 public class OthelloPlayer extends Player {
+
     private PieceColor color;
 
     /**
      * Creates a othello player which has a name and a color.
      *
-     * @param name the name of this player.
-     * @param color the color representing this player.
+     * @param name  The name of this player.
+     * @param color The color representing this player.
      */
     public OthelloPlayer(String name, PieceColor color) {
         super(name);
@@ -25,12 +26,17 @@ public class OthelloPlayer extends Player {
     /**
      * Gets the color representing this player.
      *
-     * @return the color of this player.
+     * @return The color of this player.
      */
     public PieceColor getColor() {
         return color;
     }
 
+    /**
+     * TODO
+     *
+     * @param difficulty The difficulty of this player AI.
+     */
     @Override
     public void setComputerControlled(Difficulty difficulty) {
         switch (difficulty) {

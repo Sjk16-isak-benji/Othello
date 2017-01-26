@@ -7,9 +7,9 @@ public abstract class BoardFactory {
     /**
      * Creates a normal board of a specific size.
      *
-     * @param width the width of the board.
-     * @param height the height of the board.
-     * @return a new board.
+     * @param width  The width of the board.
+     * @param height The height of the board.
+     * @return A new board.
      */
     public static Board createBoard(int width, int height) {
         return new Board(width, height);

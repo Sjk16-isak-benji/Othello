@@ -4,13 +4,14 @@ package com.jensen.game.model;
  * A class representing a cell of a game board.
  */
 public class Cell {
+
     private Board board;
     private Piece piece;
 
     /**
      * Creates a new cell.
      *
-     * @param board the board this cell belongs to.
+     * @param board The board this cell belongs to.
      */
     public Cell(Board board) {
         if (board == null) {
@@ -23,7 +24,7 @@ public class Cell {
     /**
      * Gets the position of this cell.
      *
-     * @return the position.
+     * @return The position.
      */
     public GridPosition getPosition() {
         return board.positionOf(this);
@@ -48,7 +49,7 @@ public class Cell {
     /**
      * Places a game piece in the cell.
      *
-     * @param piece the piece.
+     * @param piece The piece.
      */
     public void place(Piece piece) {
         this.piece = piece;
@@ -57,7 +58,7 @@ public class Cell {
     /**
      * Gets the piece placed in the cell, if any.
      *
-     * @return the piece, or null if no piece has been placed in this cell.
+     * @return The piece, or null if no piece has been placed in this cell.
      */
     public Piece getPiece() {
         return piece;
@@ -66,8 +67,8 @@ public class Cell {
     /**
      * Gets a cell adjacent to this cell, in a specific direction.
      *
-     * @param direction the direction.
-     * @return a cell, or null if out of bounds.
+     * @param direction The direction.
+     * @return A cell, or null if out of bounds.
      */
     public Cell getAdjacentCell(Direction direction) {
         GridPosition coords = getPosition();
