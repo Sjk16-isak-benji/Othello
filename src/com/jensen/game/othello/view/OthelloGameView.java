@@ -15,7 +15,7 @@ public class OthelloGameView extends DefualtGameView {
      * Creates a othello game view with Othello written in the header.
      */
     public OthelloGameView() {
-        super("Othello");
+        super("Othello", 5, 5);
     }
 
     @Override

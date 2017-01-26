@@ -7,9 +7,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
@@ -18,43 +16,50 @@ import java.awt.event.MouseListener;
  */
 public class DefualtGameView extends JPanel implements GameView {
 
-    private GridPanel gridPanel;
+    private JPanel gridPanel;
     private JButton menuButton;
     private JLabel titleLabel;
     private JLabel messageLabel;
-
-    /**
-     * Creates a default game view with the title 'A Grid game'.
-     */
-    public DefualtGameView() {
-        super();
-        initPanel("A Grid Game");
-    }
 
     /**
      * Creates a default game view with name as its title.
      *
      * @param name The name of the game.
      */
-    public DefualtGameView(String name) {
+    public DefualtGameView(String name, int width, int height) {
         super();
-        initPanel(name);
-    }
-
-    /**
-     * Initiates the defualt game view panel with a 'header', a grid and a message panel.
-     *
-     * @param name The name of the game, text to be displayed in the header.
-     */
-    private void initPanel(String name) {
-        gridPanel = new GridPanel();
 
         setLayout(new BorderLayout());
         add(initHeadPanel(name), BorderLayout.PAGE_START);
-        add(gridPanel, BorderLayout.CENTER);
+        add(initGridPanel(width, height), BorderLayout.CENTER);
         add(initMessagePanel(), BorderLayout.PAGE_END);
     }
 
+    /**
+     * Initiates and returns the grid panel.
+     *
+     * @param width The amount of columns in the grid
+     * @param height The amount of rows in the grid
+     * @return A JPanel with a FitLayout containing a grid.
+     */
+    private JPanel initGridPanel(int width, int height) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FitLayout());
+        panel.setPreferredSize(new Dimension(500, 500));
+
+        gridPanel = new JPanel();
+        gridPanel.setLayout(new GridLayout(width, height));
+        gridPanel.setPreferredSize(new Dimension(1, 1));
+        panel.add(gridPanel);
+
+        for (int i = 0; i < width * height; i++) {
+            JLabel label = new JLabel();
+            label.setHorizontalAlignment(JLabel.CENTER);
+            gridPanel.add(label);
+        }
+
+        return panel;
+    }
 
     /**
      * Initiates and returns the head panel.
