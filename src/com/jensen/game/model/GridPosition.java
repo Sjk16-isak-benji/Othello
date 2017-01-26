@@ -10,8 +10,8 @@ public class GridPosition {
     /**
      * Creates a new grid position.
      *
-     * @param x the x position.
-     * @param y the y position.
+     * @param x The x position.
+     * @param y The y position.
      */
     public GridPosition(int x, int y) {
         this.x = x;
@@ -21,7 +21,7 @@ public class GridPosition {
     /**
      * Gets the x position.
      *
-     * @return the x position.
+     * @return The x position.
      */
     public int getX() {
         return x;
@@ -30,7 +30,7 @@ public class GridPosition {
     /**
      * Gets the y position.
      *
-     * @return the y position.
+     * @return The y position.
      */
     public int getY() {
         return y;
