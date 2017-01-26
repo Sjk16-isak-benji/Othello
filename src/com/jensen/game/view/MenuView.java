@@ -1,6 +1,30 @@
 package com.jensen.game.view;
 
-import javax.swing.*;
+import com.jensen.game.inteface.View;
 
-public class MenuView extends JPanel {
+import javax.swing.*;
+import java.awt.Component;
+import java.awt.event.ActionListener;
+
+public class MenuView extends JPanel implements View {
+
+    @Override
+    public void updateMessage(String message) {
+
+    }
+
+    @Override
+    public void addMenuButtonListener(ActionListener l) {
+
+    }
+
+    @Override
+    public void addSetupListener(ActionListener l) {
+
+    }
+
+    @Override
+    public Component getComponent() {
+        return this;
+    }
 }
