@@ -1,5 +1,8 @@
 package com.jensen.game.model;
 
+/**
+ * An enum representing a two-dimensional direction.
+ */
 public enum Direction {
     NORTH(-1, 0),
     SOUTH(+1, 0),
