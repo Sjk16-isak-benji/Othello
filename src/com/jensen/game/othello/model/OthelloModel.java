@@ -192,12 +192,13 @@ public class OthelloModel implements Game {
 
         Cell[] validCells = new Cell[validCellArrayLength];
 
-        for (int i = 0; i < cells.length; i++) {
-            Cell cell = cells[i];
+        int i = 0;
+        for (Cell cell: cells) {
             GridPosition position = cell.getPosition();
 
             if (isValidMove(player, position.getX(), position.getY())) {
                 validCells[i] = cell;
+                i++;
             }
         }
 

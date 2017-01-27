@@ -1,9 +1,8 @@
 package com.jensen.game.othello.view;
 
 import com.jensen.game.view.DefualtGameView;
+import com.jensen.game.view.StretchIcon;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import javax.swing.*;
 
 /**
  * An Extension of the defualt game view to display a othello game.
@@ -16,22 +15,22 @@ public class OthelloGameView extends DefualtGameView {
     /**
      * Creates a othello game view with Othello written in the header.
      */
-    public OthelloGameView() {
-        super("Othello", 5, 5);
+    public OthelloGameView(int width, int height) {
+        super("Othello", width, height);
     }
 
     @Override
     public void updateCell(int x, int y, String status) {
-        ImageIcon image;
+        StretchIcon image;
 
         switch (status) {
             case "WHITE":
                 // TODO use resouceLoader instead
-                image = new ImageIcon("/resources/othello/white.png");
+                image = new StretchIcon("resources/othello/white.png");
                 break;
             case "BLACK":
                 // TODO use resouceLoader instead
-                image = new ImageIcon("/resources/othello/black.png");
+                image = new StretchIcon("resources/othello/black.png");
                 break;
             case "OBSTRUCTION":
                 // TODO

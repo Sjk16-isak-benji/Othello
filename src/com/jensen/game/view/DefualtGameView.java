@@ -52,6 +52,7 @@ public class DefualtGameView extends JPanel implements GameView {
         gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(width, height, 5, 5));
         gridPanel.setPreferredSize(new Dimension(1, 1));
+        gridPanel.setBackground(Color.BLACK);
         panel.add(gridPanel);
 
         cells = new JLabel[height][width];
@@ -59,8 +60,9 @@ public class DefualtGameView extends JPanel implements GameView {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 JLabel label = new JLabel();
-                label.setIcon(new StretchIcon((x + y) % 2 == 0 ? "resources/othello/black.png" : "resources/othello/white.png")); // TODO remove
                 label.setHorizontalAlignment(JLabel.CENTER);
+                label.setOpaque(true);
+                label.setBackground(Color.GREEN);
                 cells[y][x] = label;
                 gridPanel.add(label);
             }

@@ -5,6 +5,7 @@ import com.jensen.game.inteface.Game;
 import com.jensen.game.inteface.GameView;
 import com.jensen.game.inteface.View;
 import com.jensen.game.model.GridPosition;
+import com.jensen.game.othello.model.OthelloModel;
 import com.jensen.game.othello.view.OthelloGameView;
 import com.jensen.game.view.MenuView;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -50,6 +51,7 @@ public class Controller {
             if (pos != null) {
                 System.out.println(pos);
                 game.move(pos.getX(), pos.getY());
+                updateBoard();
             } else {
                 window.displayErrorMessage("Fatal mouse click!");
             }
@@ -81,6 +83,8 @@ public class Controller {
     private Display window;
     private GameView gameView;
     private Game game;
+    private int width;
+    private int height;
 
     public Controller(Display window) {
         this.window = window;
@@ -88,6 +92,7 @@ public class Controller {
         gameView = createOthelloView();
         gameView.updateMessage("Hello");
         gameView.addGridListener(new GridListener());
+        updateBoard();
         window.setView(gameView);
     }
 
@@ -100,9 +105,19 @@ public class Controller {
 
     private GameView createOthelloView() {
         String[] playerNames = {"Håkan", "Harald"};
-        int length = 8;
-        //game = OthelloModel(playerNames, length, length);
-        return new OthelloGameView();
+        width = 8;
+        height = 8;
+        game = new OthelloModel(playerNames, width, height);
+        return new OthelloGameView(width, height);
+    }
+
+    private void updateBoard() {
+        System.out.println(width + height);
+        for (int row = 0; row < width; row++) {
+            for (int column = 0; column < height; column++) {
+                gameView.updateCell(column, row, game.getStatus(column, row));
+            }
+        }
     }
 
 }

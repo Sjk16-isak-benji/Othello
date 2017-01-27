@@ -9,9 +9,6 @@ import com.jensen.game.model.PieceColor;
  * A factory class for creation of othello game boards.
  */
 public class OthelloBoardFactory extends BoardFactory {
-    public static void main(String[] args) {
-
-    }
 
     /**
      * Creates an (almost) empty board, of a specific size, with 4 pieces in the middle.
@@ -25,11 +22,11 @@ public class OthelloBoardFactory extends BoardFactory {
         Board board = new Board(width, height);
 
         PieceColor[] colors = PieceColor.values();
-        int centerX = width / 2;
-        int centerY = height / 2;
+        int centerX = width / 2 - 1;
+        int centerY = height / 2 - 1;
 
-        for (int x = centerX; x < centerX + 1; x++) {
-            for (int y = centerY; y < centerY + 1; y++) {
+        for (int x = centerX; x <= centerX + 1; x++) {
+            for (int y = centerY; y <= centerY + 1; y++) {
                 PieceColor color = colors[(x + y) % 2];
                 board.getCell(x, y).place(new Disk(color));
             }
