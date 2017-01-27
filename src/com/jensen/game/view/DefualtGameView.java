@@ -1,6 +1,7 @@
 package com.jensen.game.view;
 
 import com.jensen.game.inteface.GameView;
+import com.jensen.game.model.GridPosition;
 
 import javax.swing.Box;
 import javax.swing.Icon;
@@ -135,13 +136,29 @@ public class DefualtGameView extends JPanel implements GameView {
     }
 
     @Override
+    public GridPosition getPositionOf(Object o) {
+        for (int y = 0; y < cells.length; y++) {
+            for (int x = 0; x <cells[y].length; x++) {
+                if (cells[y][x].equals(o)) {
+                    return new GridPosition(x, y);
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    @Override
     public void updateMessage(String message) {
         messageLabel.setText(message);
     }
 
     @Override
     public void addGridListener(MouseListener l) {
-
+        for (JLabel[] row: cells) {
+            for (JLabel cell: row) {
+                cell.addMouseListener(l);
+            }
+        }
     }
 
     @Override

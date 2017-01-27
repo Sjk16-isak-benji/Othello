@@ -4,7 +4,7 @@ public interface Display {
 
     View getCurrentView();
 
-    void changeView(View view);
+    void setView(View view);
 
     void displayErrorMessage(String message);
 
