@@ -8,6 +8,10 @@ import java.awt.event.ActionListener;
 
 public class MenuView extends JPanel implements View {
 
+    public MenuView(String[] games) {
+        // TODO make a button for each game
+    }
+
     @Override
     public void updateMessage(String message) {
 
