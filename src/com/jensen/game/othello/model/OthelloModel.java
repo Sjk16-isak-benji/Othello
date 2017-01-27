@@ -24,7 +24,7 @@ public class OthelloModel implements Game {
      * @param height The amount of rows of the board.
      */
     private void initBoard(int width, int height) {
-        board = BoardFactory.createBoard(width, height);
+        board = new OthelloBoardFactory().createBoard(width, height);
     }
 
     /**
