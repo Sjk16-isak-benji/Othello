@@ -1,6 +1,7 @@
 package com.jensen.game.view;
 
 import com.jensen.game.inteface.GameView;
+import com.jensen.game.model.GridPosition;
 
 import javax.swing.Box;
 import javax.swing.Icon;
@@ -131,6 +132,11 @@ public class DefualtGameView extends JPanel implements GameView {
     @Override
     public void updateCell(int x, int y, String status) {
         getCell(y, x).setText(status);
+    }
+
+    @Override
+    public GridPosition getPositionOf(Object o) {
+        return null;
     }
 
     @Override

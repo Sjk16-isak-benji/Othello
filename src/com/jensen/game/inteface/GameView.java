@@ -1,5 +1,7 @@
 package com.jensen.game.inteface;
 
+import com.jensen.game.model.GridPosition;
+
 import java.awt.event.MouseListener;
 
 /**
@@ -16,6 +18,13 @@ public interface GameView extends View {
      * @param status The status of the cell, i.e. empty or other keyword of what the cell contains.
      */
     void updateCell(int x, int y, String status);
+
+    /**
+     * Returns the grid position of the object if it exists in this game views grid otherwise null.
+     * @param o The object which coorinates you want from this game view.
+     * @return Returns the objects grid position or null.
+     */
+    GridPosition getPositionOf(Object o);
 
     /**
      * Adds a mouse listener to each cell in the grid.
