@@ -41,13 +41,13 @@ public class OthelloPlayer extends Player {
     public void setComputerControlled(Difficulty difficulty) {
         switch (difficulty) {
             case EASY:
-                // TODO
+                ai = new DumbOthelloAI(this);
                 break;
             case NORMAL:
-                // TODO
+                ai = new AverageOthelloAI(this);
                 break;
             case HARD:
-                // TODO
+                ai = new SmartOthelloAI(this);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported difficulty");

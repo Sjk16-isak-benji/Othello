@@ -8,7 +8,7 @@ import com.jensen.game.inteface.AI;
 public abstract class Player {
 
     private String name;
-    private AI ai;
+    protected AI ai;
 
     /**
      * Creates a player with a specific name.

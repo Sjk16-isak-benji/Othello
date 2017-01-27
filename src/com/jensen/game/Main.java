@@ -5,7 +5,7 @@ import com.jensen.game.inteface.GameView;
 import com.jensen.game.othello.view.OthelloGameView;
 import com.jensen.game.view.Window;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Main {
 
@@ -15,7 +15,7 @@ public class Main {
 
         new Controller(window);
 
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.pack();
