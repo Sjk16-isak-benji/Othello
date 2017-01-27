@@ -59,6 +59,7 @@ public class DefualtGameView extends JPanel implements GameView {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 JLabel label = new JLabel();
+                label.setIcon(new StretchIcon((x + y) % 2 == 0 ? "resources/othello/black.png" : "resources/othello/white.png")); // TODO remove
                 label.setHorizontalAlignment(JLabel.CENTER);
                 cells[y][x] = label;
                 gridPanel.add(label);
@@ -136,7 +137,14 @@ public class DefualtGameView extends JPanel implements GameView {
 
     @Override
     public GridPosition getPositionOf(Object o) {
-        return null;
+        for (int y = 0; y < cells.length; y++) {
+            for (int x = 0; x <cells[y].length; x++) {
+                if (cells[y][x].equals(o)) {
+                    return new GridPosition(x, y);
+                }
+            }
+        }
+        throw new IllegalArgumentException();
     }
 
     @Override
@@ -146,7 +154,11 @@ public class DefualtGameView extends JPanel implements GameView {
 
     @Override
     public void addGridListener(MouseListener l) {
-
+        for (JLabel[] row: cells) {
+            for (JLabel cell: row) {
+                cell.addMouseListener(l);
+            }
+        }
     }
 
     @Override
