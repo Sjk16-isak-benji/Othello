@@ -16,6 +16,7 @@ import java.awt.event.MouseListener;
  */
 public class DefualtGameView extends JPanel implements GameView {
 
+    private JLabel[][] cells;
     private JPanel gridPanel;
     private JButton menuButton;
     private JLabel titleLabel;
@@ -52,10 +53,15 @@ public class DefualtGameView extends JPanel implements GameView {
         gridPanel.setPreferredSize(new Dimension(1, 1));
         panel.add(gridPanel);
 
-        for (int i = 0; i < width * height; i++) {
-            JLabel label = new JLabel();
-            label.setHorizontalAlignment(JLabel.CENTER);
-            gridPanel.add(label);
+        cells = new JLabel[height][width];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                JLabel label = new JLabel();
+                label.setHorizontalAlignment(JLabel.CENTER);
+                cells[y][x] = label;
+                gridPanel.add(label);
+            }
         }
 
         return panel;
@@ -100,6 +106,10 @@ public class DefualtGameView extends JPanel implements GameView {
         return panel;
     }
 
+    private JLabel getCell(int row, int col) {
+        return cells[row][col];
+    }
+
     /**
      * Sets the text in this title label.
      *
@@ -120,7 +130,7 @@ public class DefualtGameView extends JPanel implements GameView {
 
     @Override
     public void updateCell(int x, int y, String status) {
-
+        getCell(y, x).setText(status);
     }
 
     @Override
