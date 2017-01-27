@@ -58,16 +58,13 @@ public class OthelloModel implements Game {
             setMessage(player.getName() + " can't make a move!");
             nextPlayer();
             move(x, y);
+            return false;
         }
 
         if (!isValidMove(player, x, y)) {
             setMessage("Invalid Move!");
             return false;
         }
-
-        // place disk
-        Disk newDisk = new Disk(player.getColor());
-        board.getCell(x, y).place(newDisk);
 
         // flip other player disks
         int flips = 0;
@@ -100,6 +97,10 @@ public class OthelloModel implements Game {
                 }
             }
         }
+
+        // place disk
+        Disk newDisk = new Disk(player.getColor());
+        board.getCell(x, y).place(newDisk);
 
         setMessage(player.getName() + " flipped " + flips + " disks.");
 
@@ -193,7 +194,7 @@ public class OthelloModel implements Game {
         Cell[] validCells = new Cell[validCellArrayLength];
 
         int i = 0;
-        for (Cell cell: cells) {
+        for (Cell cell : cells) {
             GridPosition position = cell.getPosition();
 
             if (isValidMove(player, position.getX(), position.getY())) {
@@ -214,6 +215,10 @@ public class OthelloModel implements Game {
      * @return A boolean indicating whether the cell is a valid move for the player.
      */
     private boolean isValidMove(OthelloPlayer player, int x, int y) {
+        if (!board.getCell(x, y).isEmpty()) {
+            return false;
+        }
+
         for (Direction direction : Direction.values()) {
             if (isValidMove(player, x, y, direction)) {
                 return true;
@@ -244,13 +249,17 @@ public class OthelloModel implements Game {
             Disk disk = (Disk) piece;
 
             if (disk.getColor() == player.getColor()) {
-                break;
+                if (gap > 0) {
+                    return true;
+                } else {
+                    break;
+                }
             }
 
             gap++;
         }
 
-        return gap > 0;
+        return false;
     }
 
     /**
