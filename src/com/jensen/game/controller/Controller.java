@@ -5,6 +5,7 @@ import com.jensen.game.inteface.Game;
 import com.jensen.game.inteface.GameView;
 import com.jensen.game.inteface.View;
 import com.jensen.game.model.GridPosition;
+import com.jensen.game.othello.view.OthelloGameView;
 import com.jensen.game.view.MenuView;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -47,6 +48,7 @@ public class Controller {
         public void mouseClicked(MouseEvent e) {
             GridPosition pos = gameView.getPositionOf(e.getSource());
             if (pos != null) {
+                System.out.println(pos);
                 game.move(pos.getX(), pos.getY());
             } else {
                 window.displayErrorMessage("Fatal mouse click!");
@@ -83,8 +85,10 @@ public class Controller {
     public Controller(Display window) {
         this.window = window;
         //displayMenu();
-        createOthelloView();
-        window.setView();
+        gameView = createOthelloView();
+        gameView.updateMessage("Hello");
+        gameView.addGridListener(new GridListener());
+        window.setView(gameView);
     }
 
     private void displayMenu() {
@@ -94,10 +98,11 @@ public class Controller {
         this.window.setView(menu);
     }
 
-    private void createOthelloView() {
+    private GameView createOthelloView() {
         String[] playerNames = {"Håkan", "Harald"};
         int length = 8;
-        game = OthelloModel(playerNames, length, length);
+        //game = OthelloModel(playerNames, length, length);
+        return new OthelloGameView();
     }
 
 }
