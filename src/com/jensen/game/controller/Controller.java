@@ -49,7 +49,6 @@ public class Controller {
         public void mouseClicked(MouseEvent e) {
             GridPosition pos = gameView.getPositionOf(e.getSource());
             if (pos != null) {
-                System.out.println(pos);
                 game.move(pos.getX(), pos.getY());
                 updateBoard();
             } else {
@@ -112,12 +111,15 @@ public class Controller {
     }
 
     private void updateBoard() {
-        System.out.println(width + height);
         for (int row = 0; row < width; row++) {
             for (int column = 0; column < height; column++) {
                 gameView.updateCell(column, row, game.getStatus(column, row));
             }
         }
+    }
+
+    private void updateMessage() {
+        window.getCurrentView().updateMessage(game.getMessage());
     }
 
 }
