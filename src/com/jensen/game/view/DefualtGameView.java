@@ -8,6 +8,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -50,9 +51,9 @@ public class DefualtGameView extends JPanel implements GameView {
         panel.setPreferredSize(new Dimension(500, 500));
 
         gridPanel = new JPanel();
-        gridPanel.setLayout(new GridLayout(width, height, 5, 5));
+        //gridPanel.setBorder(new LineBorder(Color.BLACK, 1));
+        gridPanel.setLayout(new GridLayout(width, height));
         gridPanel.setPreferredSize(new Dimension(1, 1));
-        gridPanel.setBackground(Color.BLACK);
         panel.add(gridPanel);
 
         cells = new JLabel[height][width];
@@ -62,7 +63,8 @@ public class DefualtGameView extends JPanel implements GameView {
                 JLabel label = new JLabel();
                 label.setHorizontalAlignment(JLabel.CENTER);
                 label.setOpaque(true);
-                label.setBackground(Color.GREEN);
+                label.setBackground(Color.getHSBColor(0.3305556f, 1.0f, 0.74f));
+                label.setBorder(new LineBorder(Color.BLACK, 1));
                 cells[y][x] = label;
                 gridPanel.add(label);
             }
