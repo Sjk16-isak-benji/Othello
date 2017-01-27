@@ -22,7 +22,7 @@ public class Window extends JFrame implements Display {
     }
 
     @Override
-    public void changeView(View newView) {
+    public void setView(View newView) {
         if (newView == null) throw new IllegalArgumentException("New view is null");
         if (currentView != null) remove(currentView.getComponent());
         currentView = newView;
