@@ -15,12 +15,15 @@ public class OthelloModel implements Game {
     public OthelloModel(String[] playerNames, int width, int height) {
         initPlayers(playerNames);
         initBoard(width, height);
+        /*
+        players[1].setComputerControlled(Difficulty.EASY);
+        setMessage(getCurrentPlayer().getName() + "s' turn!");*/
     }
 
     /**
      * Initiates the board.
      *
-     * @param width The amount of columns of the board.
+     * @param width  The amount of columns of the board.
      * @param height The amount of rows of the board.
      */
     private void initBoard(int width, int height) {
@@ -50,7 +53,8 @@ public class OthelloModel implements Game {
         OthelloPlayer player = getCurrentPlayer();
 
         if (isGameOver()) {
-            setMessage("Game Over!");
+            // TODO Check who won and add to or replace message
+            setMessage("Game Over!" + " (" + getScore() + ")");
             return false;
         }
 
@@ -107,6 +111,12 @@ public class OthelloModel implements Game {
         // TODO what if player can't move?
         player = nextPlayer();
         setMessage(player.getName() + "s' turn!");
+
+        /* what if player can't move tryout // TODO scrap
+        if (getValidMoves(player).length == 0) {
+            player = nextPlayer();
+            setMessage(player.getName() + "s' turn!");
+        }*/
 
         // TODO what if only computer controlled players?
         if (player.isComputerControlled()) {
@@ -210,8 +220,8 @@ public class OthelloModel implements Game {
      * Checks whether a specific cell is a valid move for a specific player.
      *
      * @param player The player.
-     * @param x The column of the cell.
-     * @param y The row of the cell.
+     * @param x      The column of the cell.
+     * @param y      The row of the cell.
      * @return A boolean indicating whether the cell is a valid move for the player.
      */
     private boolean isValidMove(OthelloPlayer player, int x, int y) {
@@ -291,5 +301,23 @@ public class OthelloModel implements Game {
         currentPlayerIndex = new Random().nextInt(players.length);
 
         return getCurrentPlayer();
+    }
+
+    private String getScore() {
+        int black = 0;
+        int white = 0;
+        Cell[] cells = board.getCells();
+        Disk disk;
+        for (Cell cell : cells) {
+            if (!cell.isEmpty() && cell.getPiece() instanceof Disk) {
+                disk = (Disk) cell.getPiece();
+                if (disk.getColor() == PieceColor.BLACK) {
+                    black++;
+                } else {
+                    white++;
+                }
+            }
+        }
+        return "Black: " + black + " - White: " + white;
     }
 }
