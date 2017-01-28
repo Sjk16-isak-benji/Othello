@@ -8,7 +8,6 @@ import com.jensen.game.model.GridPosition;
 import com.jensen.game.othello.model.OthelloModel;
 import com.jensen.game.othello.view.OthelloGameView;
 import com.jensen.game.view.MenuView;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,14 +22,15 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand().toLowerCase()) {
                 case "menu":
-                    displayMenu();
+                    initOthelloGame();
+                    break;
                 case "play":
                     // TODO switch view to game setup
                 case "continue":
                     // TODO create game model with user pref
 
                 default:
-                    throw new NotImplementedException();
+                    System.out.println("Button fail: " + e.getActionCommand());;
             }
         }
     }
@@ -88,11 +88,16 @@ public class Controller {
     public Controller(Display window) {
         this.window = window;
         //displayMenu();
+        initOthelloGame();
+    }
+
+    private void initOthelloGame() {
         gameView = createOthelloView();
-        gameView.updateMessage("Hello");
         gameView.addGridListener(new GridListener());
+        gameView.addMenuButtonListener(new MenuListener());
         updateBoard();
         window.setView(gameView);
+        updateMessage();
     }
 
     private void displayMenu() {
@@ -103,7 +108,7 @@ public class Controller {
     }
 
     private GameView createOthelloView() {
-        String[] playerNames = {"Håkan", "Harald"};
+        String[] playerNames = {"Black", "White"};
         width = 8;
         height = 8;
         game = new OthelloModel(playerNames, width, height);
