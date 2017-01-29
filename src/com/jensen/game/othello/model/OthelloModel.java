@@ -143,6 +143,11 @@ public class OthelloModel implements Game {
     @Override
     public String getStatus(int x, int y) {
         Cell cell = board.getCell(x, y);
+        
+        if (isValidMove(getCurrentPlayer(), x, y)) {
+            return "VALID-" + getCurrentPlayer().getColor();
+        }
+
 
         if (cell.isEmpty()) {
             return "";
