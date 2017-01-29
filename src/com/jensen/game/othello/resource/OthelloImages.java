@@ -1,4 +1,4 @@
-package com.jensen.game.othello.resouce;
+package com.jensen.game.othello.resource;
 
 import com.jensen.game.resource.ImageLoader;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
