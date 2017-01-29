@@ -1,8 +1,8 @@
 package com.jensen.game.othello.view;
 
+import com.jensen.game.othello.resource.OthelloImages;
 import com.jensen.game.view.DefualtGameView;
 import com.jensen.game.view.StretchIcon;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * An Extension of the defualt game view to display a othello game.
@@ -25,16 +25,14 @@ public class OthelloGameView extends DefualtGameView {
 
         switch (status) {
             case "WHITE":
-                // TODO use resouceLoader instead
-                image = new StretchIcon("resources/othello/white.png");
+                image = new StretchIcon(OthelloImages.getWhiteDisk());
                 break;
             case "BLACK":
-                // TODO use resouceLoader instead
-                image = new StretchIcon("resources/othello/black.png");
+                image = new StretchIcon(OthelloImages.getBlackDisk());
                 break;
             case "OBSTRUCTION":
-                // TODO
-                throw new NotImplementedException();
+                image = new StretchIcon(OthelloImages.getObstruction());
+                break;
             case "":
                 image = null;
                 break;
