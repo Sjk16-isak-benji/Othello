@@ -9,6 +9,7 @@ import com.jensen.game.othello.model.OthelloModel;
 import com.jensen.game.othello.view.OthelloGameView;
 import com.jensen.game.view.MenuView;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -30,7 +31,8 @@ public class Controller {
                     // TODO create game model with user pref
 
                 default:
-                    System.out.println("Button fail: " + e.getActionCommand());;
+                    System.out.println("Button fail: " + e.getActionCommand());
+                    ;
             }
         }
     }
@@ -45,9 +47,41 @@ public class Controller {
 
     public class GridListener implements MouseListener {
 
+        private Object pressedSource;
+
         @Override
         public void mouseClicked(MouseEvent e) {
+            mouseClick(e.getSource());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            pressedSource = e.getComponent();
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (pressedSource == e.getComponent().getComponentAt(e.getPoint())) {
+                mouseClick(pressedSource);
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
             GridPosition pos = gameView.getPositionOf(e.getSource());
+            String status = game.getStatus(pos.getX(), pos.getY());
+            if (status.equalsIgnoreCase("valid")) {
+                e.getComponent().setBackground(Color.GREEN);
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            e.getComponent().setBackground(Color.getHSBColor(0.3305556f, 1.0f, 0.74f));
+        }
+
+        private void mouseClick(Object source) {
+            GridPosition pos = gameView.getPositionOf(source);
             if (pos != null) {
                 game.move(pos.getX(), pos.getY());
                 updateBoard();
@@ -55,27 +89,6 @@ public class Controller {
                 window.displayErrorMessage("Fatal mouse click!");
             }
             gameView.updateMessage(game.getMessage());
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
         }
     }
 
@@ -101,14 +114,14 @@ public class Controller {
     }
 
     private void displayMenu() {
-        String[] games = {"Othello"};
+        String[] games = { "Othello" };
         View menu = new MenuView(games);
         menu.addMenuButtonListener(new MenuListener());
         this.window.setView(menu);
     }
 
     private GameView createOthelloView() {
-        String[] playerNames = {"Black", "White"};
+        String[] playerNames = { "Black", "White" };
         width = 8;
         height = 8;
         game = new OthelloModel(playerNames, width, height);
