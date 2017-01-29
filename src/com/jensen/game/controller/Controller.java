@@ -9,7 +9,6 @@ import com.jensen.game.othello.model.OthelloModel;
 import com.jensen.game.othello.view.OthelloGameView;
 import com.jensen.game.view.MenuView;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -70,14 +69,14 @@ public class Controller {
         public void mouseEntered(MouseEvent e) {
             GridPosition pos = gameView.getPositionOf(e.getSource());
             String status = game.getStatus(pos.getX(), pos.getY());
-            if (status.equalsIgnoreCase("valid")) {
-                e.getComponent().setBackground(Color.GREEN);
-            }
+            gameView.mouseEnteredCell(pos.getX(), pos.getY(), status);
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            e.getComponent().setBackground(Color.getHSBColor(0.3305556f, 1.0f, 0.74f));
+            GridPosition pos = gameView.getPositionOf(e.getSource());
+            String status = game.getStatus(pos.getX(), pos.getY());
+            gameView.updateCell(pos.getX(), pos.getY(), status);
         }
 
         private void mouseClick(Object source) {

@@ -63,7 +63,7 @@ public class DefualtGameView extends JPanel implements GameView {
                 JLabel label = new JLabel();
                 label.setHorizontalAlignment(JLabel.CENTER);
                 label.setOpaque(true);
-                label.setBackground(Color.getHSBColor(0.3305556f, 1.0f, 0.74f));
+                label.setBackground(Color.WHITE);
                 label.setBorder(new LineBorder(Color.BLACK, 1));
                 cells[y][x] = label;
                 gridPanel.add(label);
@@ -121,7 +121,7 @@ public class DefualtGameView extends JPanel implements GameView {
      *
      * @param text The text to be displayed in this header.
      */
-    public void setTitleText(String text) {
+    protected void setTitleText(String text) {
         titleLabel.setText(text);
     }
 
@@ -130,13 +130,18 @@ public class DefualtGameView extends JPanel implements GameView {
      *
      * @param icon The icon to be displayed in this header.
      */
-    public void setTitleIcon(Icon icon) {
+    protected void setTitleIcon(Icon icon) {
         titleLabel.setIcon(icon);
     }
 
     @Override
     public void updateCell(int x, int y, String status) {
         getCell(y, x).setText(status);
+    }
+
+    @Override
+    public void mouseEnteredCell(int x, int y, String status) {
+
     }
 
     @Override

@@ -11,6 +11,7 @@ public class OthelloModel implements Game {
     private OthelloPlayer[] players;
     private int currentPlayerIndex;
     private String message = "";
+    private Cell latestMove;
 
     public OthelloModel(String[] playerNames, int width, int height) {
         initPlayers(playerNames);
@@ -104,6 +105,7 @@ public class OthelloModel implements Game {
         // place disk
         Disk newDisk = new Disk(player.getColor());
         board.getCell(x, y).place(newDisk);
+        latestMove = board.getCell(x, y);
 
         setMessage(player.getName() + " flipped " + flips + " disks.");
 
@@ -143,20 +145,24 @@ public class OthelloModel implements Game {
     @Override
     public String getStatus(int x, int y) {
         Cell cell = board.getCell(x, y);
-        
+
         if (isValidMove(getCurrentPlayer(), x, y)) {
             return "VALID-" + getCurrentPlayer().getColor();
         }
-
 
         if (cell.isEmpty()) {
             return "";
         }
 
+        String latest = "";
+        if (cell.equals(latestMove)) {
+            latest = "LATEST-";
+        }
+
         Piece piece = cell.getPiece();
 
         if (piece instanceof Disk) {
-            return ((Disk) piece).getColor().toString();
+            return latest + ((Disk) piece).getColor();
         }
 
         if (piece instanceof Obstruction) {
