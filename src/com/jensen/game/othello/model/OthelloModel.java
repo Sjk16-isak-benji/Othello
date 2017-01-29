@@ -15,9 +15,8 @@ public class OthelloModel implements Game {
     public OthelloModel(String[] playerNames, int width, int height) {
         initPlayers(playerNames);
         initBoard(width, height);
-        /*
-        players[1].setComputerControlled(Difficulty.EASY);
-        setMessage(getCurrentPlayer().getName() + "s' turn!");*/
+        players[1].setComputerControlled(Difficulty.HARD);
+        setMessage(getCurrentPlayer().getName() + "s' turn!");
     }
 
     /**
@@ -112,17 +111,23 @@ public class OthelloModel implements Game {
         player = nextPlayer();
         setMessage(player.getName() + "s' turn!");
 
-        /* what if player can't move tryout // TODO scrap
+        // what if player can't move tryout // TODO scrap
         if (getValidMoves(player).length == 0) {
             player = nextPlayer();
             setMessage(player.getName() + "s' turn!");
-        }*/
+        }
 
         // TODO what if only computer controlled players?
         if (player.isComputerControlled()) {
             Cell chosenMove = player.getAI().getMove(getValidMoves(player));
-            GridPosition movePosition = chosenMove.getPosition();
-            move(movePosition.getX(), movePosition.getY());
+            if (chosenMove != null) {
+                GridPosition movePosition = chosenMove.getPosition();
+                move(movePosition.getX(), movePosition.getY());
+            } else {
+                System.out.println("fail");
+                player = nextPlayer();
+                setMessage(player.getName() + "s' turn!");
+            }
         }
 
         return true;
