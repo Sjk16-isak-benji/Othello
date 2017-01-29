@@ -54,8 +54,8 @@ public class Controller {
             } else {
                 window.displayErrorMessage("Fatal mouse click!");
             }
-            gameView.updateMessage(game.getMessage());
 
+            updateMessage();
         }
 
         @Override
@@ -95,8 +95,8 @@ public class Controller {
         gameView = createOthelloView();
         gameView.addGridListener(new GridListener());
         gameView.addMenuButtonListener(new MenuListener());
-        updateBoard();
         window.setView(gameView);
+        updateBoard();
         updateMessage();
     }
 
@@ -124,7 +124,11 @@ public class Controller {
     }
 
     private void updateMessage() {
-        window.getCurrentView().updateMessage(game.getMessage());
+        String message;
+        while ((message = game.getMessage()) != null) {
+            // TODO delay between messages
+            window.getCurrentView().updateMessage(message);
+        }
     }
 
 }

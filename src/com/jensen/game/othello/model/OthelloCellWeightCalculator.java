@@ -30,16 +30,17 @@ public class OthelloCellWeightCalculator {
 
     public int getWeight(Cell cell, OthelloPlayer player) {
         int score = 0;
-        Cell adjacentCell;
 
-        if (isCornerCell(cell)) {
+        if (OthelloBoard.isInCorner(cell)) {
             score += cornerWeight;
-        } else if (isSideCell(cell)) {
+        } else if (OthelloBoard.isNextToEdge(cell)) {
             score += sideWeight;
         }
 
         for (Direction direction : Direction.values()) {
-            while ((adjacentCell = cell.getAdjacentCell(direction)) != null) {
+            Cell adjacentCell = cell;
+
+            while ((adjacentCell = adjacentCell.getAdjacentCell(direction)) != null) {
                 if (adjacentCell.isEmpty()) {
                     continue;
                 }
@@ -61,33 +62,5 @@ public class OthelloCellWeightCalculator {
         }
 
         return score;
-    }
-
-    private boolean isCornerCell(Cell cell) {
-        int adjacentOutOfBounds = 0;
-
-        for (Direction direction : Direction.values()) {
-            Cell adjacentCell = cell.getAdjacentCell(direction);
-
-            if (adjacentCell == null) {
-                adjacentOutOfBounds++;
-            }
-        }
-
-        return adjacentOutOfBounds >= 5;
-    }
-
-    private boolean isSideCell(Cell cell) {
-        int adjacentOutOfBounds = 0;
-
-        for (Direction direction : Direction.values()) {
-            Cell adjacentCell = cell.getAdjacentCell(direction);
-
-            if (adjacentCell == null) {
-                adjacentOutOfBounds++;
-            }
-        }
-
-        return adjacentOutOfBounds > 0 && adjacentOutOfBounds < 5;
     }
 }

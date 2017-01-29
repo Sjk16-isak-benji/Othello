@@ -3,6 +3,9 @@ package com.jensen.game.othello.model;
 import com.jensen.game.inteface.Game;
 import com.jensen.game.model.*;
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class OthelloModel implements Game {
@@ -10,14 +13,18 @@ public class OthelloModel implements Game {
     private Board board;
     private OthelloPlayer[] players;
     private int currentPlayerIndex;
-    private String message = "";
+    private Deque<String> messageQueue = new LinkedList<String>();
 
     public OthelloModel(String[] playerNames, int width, int height) {
         initPlayers(playerNames);
         initBoard(width, height);
-        /*
-        players[1].setComputerControlled(Difficulty.EASY);
-        setMessage(getCurrentPlayer().getName() + "s' turn!");*/
+
+        randomPlayer();
+
+        // players[0].setComputerControlled(Difficulty.NORMAL);
+        // players[1].setComputerControlled(Difficulty.EASY);
+
+        prepareNextTurn();
     }
 
     /**
@@ -50,82 +57,51 @@ public class OthelloModel implements Game {
 
     @Override
     public boolean move(int x, int y) {
+         OthelloPlayer player = getCurrentPlayer();
+
+        if (OthelloBoard.isGameOver(players, board)) {
+            return false;
+        }
+
+        if (!OthelloBoard.isValidMove(player, x, y, board)) {
+            addMessage("Invalid Move!");
+            return false;
+        }
+
+        int flips = OthelloBoard.makeMove(player, x, y, board);
+        addMessage(player.getName() + " flipped " + flips + " disks.");
+
+        prepareNextTurn();
+
+        return true;
+    }
+
+    /**
+     * TODO
+     */
+    private void prepareNextTurn() {
+        nextPlayer();
+
+        if (OthelloBoard.isGameOver(players, board)) {
+            // TODO Check who won and add to or replace message
+            addMessage("Game Over!" + " (" + OthelloBoard.getScore(board) + ")");
+            return;
+        }
+
         OthelloPlayer player = getCurrentPlayer();
 
-        if (isGameOver()) {
-            // TODO Check who won and add to or replace message
-            setMessage("Game Over!" + " (" + getScore() + ")");
-            return false;
+        if (!OthelloBoard.hasValidMoves(player, board)) {
+            prepareNextTurn();
         }
 
-        if (getValidMoves(player).length == 0) {
-            setMessage(player.getName() + " can't make a move!");
-            nextPlayer();
-            move(x, y);
-            return false;
-        }
+        addMessage(player.getName() + "s' turn!");
 
-        if (!isValidMove(player, x, y)) {
-            setMessage("Invalid Move!");
-            return false;
-        }
-
-        // flip other player disks
-        int flips = 0;
-
-        for (Direction direction : Direction.values()) {
-            if (!isValidMove(player, x, y, direction)) {
-                continue;
-            }
-
-            Cell cell = board.getCell(x, y);
-
-            while ((cell = cell.getAdjacentCell(direction)) != null) {
-                if (cell.isEmpty()) {
-                    break;
-                }
-
-                Piece piece = cell.getPiece();
-
-                if (!(piece instanceof Disk)) {
-                    break;
-                }
-
-                Disk disk = (Disk) piece;
-
-                if (disk.getColor() == player.getColor()) {
-                    break;
-                } else {
-                    disk.flip();
-                    flips++;
-                }
-            }
-        }
-
-        // place disk
-        Disk newDisk = new Disk(player.getColor());
-        board.getCell(x, y).place(newDisk);
-
-        setMessage(player.getName() + " flipped " + flips + " disks.");
-
-        // TODO what if player can't move?
-        player = nextPlayer();
-        setMessage(player.getName() + "s' turn!");
-
-        /* what if player can't move tryout // TODO scrap
-        if (getValidMoves(player).length == 0) {
-            player = nextPlayer();
-            setMessage(player.getName() + "s' turn!");
-        }*/
-
-        // TODO what if only computer controlled players?
         if (player.isComputerControlled()) {
-            Cell chosenMove = player.getAI().getMove(getValidMoves(player));
+            Cell[] validMoves = OthelloBoard.getValidMoves(player, board);
+            Cell chosenMove = player.getAI().getMove(validMoves);
             GridPosition movePosition = chosenMove.getPosition();
             move(movePosition.getX(), movePosition.getY());
         }
-
-        return true;
     }
 
     /**
@@ -156,120 +132,24 @@ public class OthelloModel implements Game {
         return ""; // throw Exception?
     }
 
+    /**
+     * Gets and removes the first message from the message queue. Returns null if there are no messages.
+     * @return A message.
+     */
     @Override
     public String getMessage() {
-        return message;
+        try {
+            return messageQueue.pop();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     /**
-     * Sets the current message.
+     * Adds a message to the message queue.
      */
-    private void setMessage(String msg) {
-        message = msg;
-    }
-
-    /**
-     * Checks whether the game is over.
-     *
-     * @return A boolean indicating whether
-     */
-    private boolean isGameOver() {
-        for (OthelloPlayer player : players) {
-            if (getValidMoves(player).length != 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Gets valid moves a player may make.
-     *
-     * @param player The player in question.
-     * @return Valid cells a player may move to.
-     */
-    private Cell[] getValidMoves(OthelloPlayer player) {
-        Cell[] cells = board.getCells();
-        int validCellArrayLength = 0;
-
-        for (Cell cell : cells) {
-            GridPosition position = cell.getPosition();
-
-            if (isValidMove(player, position.getX(), position.getY())) {
-                validCellArrayLength++;
-            }
-        }
-
-        Cell[] validCells = new Cell[validCellArrayLength];
-
-        int i = 0;
-        for (Cell cell : cells) {
-            GridPosition position = cell.getPosition();
-
-            if (isValidMove(player, position.getX(), position.getY())) {
-                validCells[i] = cell;
-                i++;
-            }
-        }
-
-        return validCells;
-    }
-
-    /**
-     * Checks whether a specific cell is a valid move for a specific player.
-     *
-     * @param player The player.
-     * @param x      The column of the cell.
-     * @param y      The row of the cell.
-     * @return A boolean indicating whether the cell is a valid move for the player.
-     */
-    private boolean isValidMove(OthelloPlayer player, int x, int y) {
-        if (!board.getCell(x, y).isEmpty()) {
-            return false;
-        }
-
-        for (Direction direction : Direction.values()) {
-            if (isValidMove(player, x, y, direction)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * TODO
-     */
-    private boolean isValidMove(OthelloPlayer player, int x, int y, Direction direction) {
-        int gap = 0;
-        Cell cell = board.getCell(x, y);
-
-        while ((cell = cell.getAdjacentCell(direction)) != null) {
-            if (cell.isEmpty()) {
-                break;
-            }
-
-            Piece piece = cell.getPiece();
-
-            if (!(piece instanceof Disk)) {
-                break;
-            }
-
-            Disk disk = (Disk) piece;
-
-            if (disk.getColor() == player.getColor()) {
-                if (gap > 0) {
-                    return true;
-                } else {
-                    break;
-                }
-            }
-
-            gap++;
-        }
-
-        return false;
+    private void addMessage(String msg) {
+        messageQueue.add(msg);
     }
 
     /**
@@ -287,9 +167,20 @@ public class OthelloModel implements Game {
      * @return The next player.
      */
     private OthelloPlayer nextPlayer() {
+        if (OthelloBoard.isGameOver(players, board)) {
+            return null;
+        }
+
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
 
-        return getCurrentPlayer();
+        OthelloPlayer player = getCurrentPlayer();
+        //addMessage(player.getName() + "s' " + "(" + player.getColor().toString().toLowerCase() + ")" + " turn!");
+
+        if (!OthelloBoard.hasValidMoves(player, board)) {
+            nextPlayer();
+        }
+
+        return player;
     }
 
     /**
@@ -298,26 +189,19 @@ public class OthelloModel implements Game {
      * @return The chosen player.
      */
     private OthelloPlayer randomPlayer() {
+        if (OthelloBoard.isGameOver(players, board)) {
+            return null;
+        }
+
         currentPlayerIndex = new Random().nextInt(players.length);
 
-        return getCurrentPlayer();
-    }
+        OthelloPlayer player = getCurrentPlayer();
+        //addMessage(player.getName() + "s' " + "(" + player.getColor().toString().toLowerCase() + ")" + " turn!");
 
-    private String getScore() {
-        int black = 0;
-        int white = 0;
-        Cell[] cells = board.getCells();
-        Disk disk;
-        for (Cell cell : cells) {
-            if (!cell.isEmpty() && cell.getPiece() instanceof Disk) {
-                disk = (Disk) cell.getPiece();
-                if (disk.getColor() == PieceColor.BLACK) {
-                    black++;
-                } else {
-                    white++;
-                }
-            }
+        if (!OthelloBoard.hasValidMoves(player, board)) {
+            nextPlayer();
         }
-        return "Black: " + black + " - White: " + white;
+
+        return player;
     }
 }
