@@ -23,6 +23,10 @@ public class OthelloGameView extends DefualtGameView {
     public void updateCell(int x, int y, String status) {
         StretchIcon image;
 
+        if(status.contains("VALID")) {
+            status = "";
+        }
+
         switch (status) {
             case "WHITE":
                 // TODO use resouceLoader instead
