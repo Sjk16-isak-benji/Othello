@@ -78,7 +78,7 @@ public class Cell {
                 coords.getX() + direction.getHorizontalStep(),
                 coords.getY() + direction.getVerticalStep()
             );
-        } catch (IndexOutOfBoundsException error) {
+        } catch (IndexOutOfBoundsException e) {
             return null;
         }
     }
