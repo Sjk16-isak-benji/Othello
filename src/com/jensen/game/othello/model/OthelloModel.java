@@ -14,6 +14,7 @@ public class OthelloModel implements Game {
     private OthelloPlayer[] players;
     private int currentPlayerIndex;
     private Deque<String> messageQueue = new LinkedList<String>();
+    private Cell latestMove;
 
     public OthelloModel(String[] playerNames, int width, int height) {
         initPlayers(playerNames);
@@ -21,8 +22,8 @@ public class OthelloModel implements Game {
 
         randomPlayer();
 
-        // players[0].setComputerControlled(Difficulty.NORMAL);
-        // players[1].setComputerControlled(Difficulty.EASY);
+        players[0].setComputerControlled(Difficulty.NORMAL);
+        players[1].setComputerControlled(Difficulty.EASY);
 
         prepareNextTurn();
     }
@@ -69,6 +70,7 @@ public class OthelloModel implements Game {
         }
 
         int flips = OthelloBoard.makeMove(player, x, y, board);
+        latestMove = board.getCell(x, y);
         addMessage(player.getName() + " flipped " + flips + " disks.");
 
         prepareNextTurn();
@@ -84,7 +86,7 @@ public class OthelloModel implements Game {
 
         if (OthelloBoard.isGameOver(players, board)) {
             // TODO Check who won and add to or replace message
-            addMessage("Game Over!" + " (" + OthelloBoard.getScore(board) + ")");
+            addMessage("Game Over! (" + OthelloBoard.getScore(board) + ")");
             return;
         }
 
@@ -94,7 +96,7 @@ public class OthelloModel implements Game {
             prepareNextTurn();
         }
 
-        addMessage(player.getName() + "s' turn!");
+        addMessage(player.getName() + "s' (" + player.getColor().toString().toLowerCase() + ") turn!");
 
         if (player.isComputerControlled()) {
             Cell[] validMoves = OthelloBoard.getValidMoves(player, board);
@@ -115,14 +117,23 @@ public class OthelloModel implements Game {
     public String getStatus(int x, int y) {
         Cell cell = board.getCell(x, y);
 
+        if (OthelloBoard.isValidMove(getCurrentPlayer(), x, y, board)) {
+            return "VALID-" + getCurrentPlayer().getColor();
+        }
+
         if (cell.isEmpty()) {
             return "";
+        }
+
+        String latest = "";
+        if (cell.equals(latestMove)) {
+            latest = "LATEST-";
         }
 
         Piece piece = cell.getPiece();
 
         if (piece instanceof Disk) {
-            return ((Disk) piece).getColor().toString();
+            return latest + ((Disk) piece).getColor();
         }
 
         if (piece instanceof Obstruction) {
@@ -174,7 +185,6 @@ public class OthelloModel implements Game {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
 
         OthelloPlayer player = getCurrentPlayer();
-        //addMessage(player.getName() + "s' " + "(" + player.getColor().toString().toLowerCase() + ")" + " turn!");
 
         if (!OthelloBoard.hasValidMoves(player, board)) {
             nextPlayer();
@@ -196,7 +206,6 @@ public class OthelloModel implements Game {
         currentPlayerIndex = new Random().nextInt(players.length);
 
         OthelloPlayer player = getCurrentPlayer();
-        //addMessage(player.getName() + "s' " + "(" + player.getColor().toString().toLowerCase() + ")" + " turn!");
 
         if (!OthelloBoard.hasValidMoves(player, board)) {
             nextPlayer();
