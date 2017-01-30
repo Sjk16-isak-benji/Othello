@@ -45,37 +45,49 @@ public class Controller {
 
     public class GridListener implements MouseListener {
 
+        private Object pressedSource;
+
         @Override
         public void mouseClicked(MouseEvent e) {
+            mouseClick(e.getSource());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            pressedSource = e.getComponent();
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (pressedSource == e.getComponent().getComponentAt(e.getPoint())) {
+                mouseClick(pressedSource);
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
             GridPosition pos = gameView.getPositionOf(e.getSource());
+            String status = game.getStatus(pos.getX(), pos.getY());
+            gameView.mouseEnteredCell(pos.getX(), pos.getY(), status);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            GridPosition pos = gameView.getPositionOf(e.getSource());
+            String status = game.getStatus(pos.getX(), pos.getY());
+            gameView.updateCell(pos.getX(), pos.getY(), status);
+        }
+
+        private void mouseClick(Object source) {
+            GridPosition pos = gameView.getPositionOf(source);
             if (pos != null) {
                 game.move(pos.getX(), pos.getY());
                 updateBoard();
             } else {
                 window.displayErrorMessage("Fatal mouse click!");
             }
-            gameView.updateMessage(game.getMessage());
 
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
+            updateMessage();
         }
     }
 
@@ -95,20 +107,20 @@ public class Controller {
         gameView = createOthelloView();
         gameView.addGridListener(new GridListener());
         gameView.addMenuButtonListener(new MenuListener());
-        updateBoard();
         window.setView(gameView);
+        updateBoard();
         updateMessage();
     }
 
     private void displayMenu() {
-        String[] games = {"Othello"};
+        String[] games = { "Othello" };
         View menu = new MenuView(games);
         menu.addMenuButtonListener(new MenuListener());
         this.window.setView(menu);
     }
 
     private GameView createOthelloView() {
-        String[] playerNames = {"Black", "White"};
+        String[] playerNames = { "Black", "White" };
         width = 8;
         height = 8;
         game = new OthelloModel(playerNames, width, height);
@@ -124,7 +136,11 @@ public class Controller {
     }
 
     private void updateMessage() {
-        window.getCurrentView().updateMessage(game.getMessage());
+        String message;
+        while ((message = game.getMessage()) != null) {
+            // TODO delay between messages
+            window.getCurrentView().updateMessage(message);
+        }
     }
 
 }
