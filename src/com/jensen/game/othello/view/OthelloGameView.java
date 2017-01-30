@@ -78,11 +78,11 @@ public class OthelloGameView extends DefualtGameView {
             switch (status) {
                 case "VALID-WHITE":
                     // TODO use resouceLoader instead
-                    image = new StretchIcon("resources/othello/white.png");
+                    image = new StretchIcon(OthelloImages.getWhiteTransDisk());
                     break;
                 case "VALID-BLACK":
                     // TODO use resouceLoader instead
-                    image = new StretchIcon("resources/othello/black.png");
+                    image = new StretchIcon(OthelloImages.getBlackTransDisk());
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown status.");

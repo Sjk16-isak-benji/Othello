@@ -15,6 +15,14 @@ public abstract class OthelloImages {
         return ImageLoader.getInstance().load("/othello/black.png", true);
     }
 
+    public static Image getWhiteTransDisk() {
+        return ImageLoader.getInstance().load("/othello/whiteTrans.png", true);
+    }
+
+    public static Image getBlackTransDisk() {
+        return ImageLoader.getInstance().load("/othello/blackTrans.png", true);
+    }
+
     public static Image getObstruction() {
         // TODO
         throw new NotImplementedException();
