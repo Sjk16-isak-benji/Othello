@@ -1,7 +1,5 @@
 package com.jensen.game.view;
 
-import com.jensen.game.inteface.View;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -9,81 +7,125 @@ import java.awt.event.ActionListener;
 /**
  * A view in which to setup a game.
  */
-public class GameSetupView extends JPanel implements View {
+public class GameSetupView extends JPanel {
 
     public static void main(String[] args) {
+        GameSetupView a = new GameSetupView();
+        a.showDifficulties(new String[] { "Aaifhsio", "soifseo" });
+        a.showOpponentType(new String[] { "afjei", "pohjrs" });
+        a.showPlayerCount(5, 10);
+
         JFrame frame = new JFrame();
-        frame.add(new GameSetupView());
+        frame.add(a);
         //frame.setSize(new Dimension(300, 500));
         frame.pack();
         frame.setVisible(true);
     }
 
-    private JComboBox<String> difficultyComboBox;
+    private JPanel centerPanel;
+    private JButton startButton;
+    private JComboBox difficultyComboBox;
+    private JComboBox opponentComboBox;
+    private JSpinner playerCountSpinner;
+    private JSpinner boardSizeSpinner;
 
     public GameSetupView() {
-        // TODO create base panels and objects then use setters for customization
-        setLayout(new GridLayout(0, 1, 0, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        setLayout(new BorderLayout(5, 5));
 
-        JPanel panel;
-
-        panel = new JPanel(new FlowLayout());
-        panel.add(new JLabel("Difficulty: "));
-        difficultyComboBox = new JComboBox<String>(new String[] { "Easy", "Normal", "Hard" });
-        panel.add(difficultyComboBox);
-        add(panel);
-
-        panel = new JPanel(new FlowLayout());
-        panel.add(new JLabel("Player count: "));
-        panel.add(new JSpinner(new SpinnerNumberModel(1, 1, 4, 1)));
-        add(panel);
-
-        panel = new JPanel(new FlowLayout());
-        panel.add(new JLabel("Something: "));
-        panel.add(new JButton("Wawawa"));
-        add(panel);
-
-        panel = new JPanel(new FlowLayout());
-        panel.add(new JLabel("Something else: "));
-        panel.add(new JButton("Woop"));
-        add(panel);
-
-        add(new JButton("Start"));
+        initCenterPanel();
+        initExitPanel();
     }
 
-    public void setDifficulties(String[] difficulties) {
-        difficultyComboBox.removeAllItems();
-        difficultyComboBox.setModel(new DefaultComboBoxModel<String>(difficulties));
+    private void initExitPanel() {
+        JPanel startPanel = new JPanel();
+        startPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        startButton = new JButton("Done");
+        startPanel.add(startButton);
+
+        add(startPanel, BorderLayout.SOUTH);
+    }
+
+    private void initCenterPanel() {
+        JPanel centerPanelWrapper = new JPanel();
+        centerPanelWrapper.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(0, 1, 0, 10));
+        centerPanelWrapper.add(centerPanel);
+
+        add(centerPanelWrapper);
+    }
+
+    public void showDifficulties(String[] difficulties) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        JLabel difficultyDescription = new JLabel("Difficulty: ");
+        panel.add(difficultyDescription);
+
+        difficultyComboBox = new JComboBox(difficulties);
+        panel.add(difficultyComboBox);
+
+        centerPanel.add(panel);
     }
 
     public String getDifficulty() {
         return (String) difficultyComboBox.getSelectedItem();
     }
 
-    public boolean getFightAI() {
-        return true;
+    public void showPlayerCount(int min, int max) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        JLabel playerCountDescription = new JLabel("Player count: ");
+        panel.add(playerCountDescription);
+
+        playerCountSpinner = new JSpinner(new SpinnerNumberModel(min, min, max, 1));
+        panel.add(playerCountSpinner);
+
+        centerPanel.add(panel);
     }
 
-    // TODO Create getters for settings
-
-    @Override
-    public void updateMessage(String message) {
-
+    public int getPlayerCount() {
+        return (int) playerCountSpinner.getModel().getValue();
     }
 
-    @Override
-    public void addMenuButtonListener(ActionListener l) {
+    public void showOpponentType(String[] types) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
+        JLabel opponentDescription = new JLabel("Opponent: ");
+        panel.add(opponentDescription);
+
+        opponentComboBox = new JComboBox(types);
+        panel.add(opponentComboBox);
+
+        centerPanel.add(panel);
     }
 
-    @Override
-    public void addSetupListener(ActionListener l) {
-
+    public String getOpponentType() {
+        return (String) opponentComboBox.getSelectedItem();
     }
 
-    @Override
-    public Component getComponent() {
-        return null;
+    public void showBoardSize(int min, int max, int stepSize) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        JLabel boardSizeDescription = new JLabel("Board size: ");
+        panel.add(boardSizeDescription);
+
+        boardSizeSpinner = new JSpinner(new SpinnerNumberModel(min, min, max, stepSize));
+        panel.add(boardSizeSpinner);
+
+        centerPanel.add(panel);
+    }
+
+    public int getBoardSize() {
+        return (int) boardSizeSpinner.getModel().getValue();
+    }
+
+    public void addListeners(ActionListener l) {
+        startButton.addActionListener(l);
     }
 }

@@ -1,46 +1,40 @@
 package com.jensen.game.view;
 
-import com.jensen.game.inteface.Display;
-import com.jensen.game.inteface.View;
-
 import javax.swing.*;
 
-public class Window extends JFrame implements Display {
+public class Window extends JFrame {
 
-    private View currentView;
+    private JPanel currentView;
 
     public Window() {
         super();
     }
 
-    public Window(View view) {
+    public Window(JPanel view) {
         super();
         currentView = view;
-        add(currentView.getComponent());
+        add(currentView);
     }
 
-    public Window(View view, String title) {
+    public Window(JPanel view, String title) {
         super(title);
         currentView = view;
-        add(currentView.getComponent());
+        add(currentView);
     }
 
-    @Override
-    public void setView(View newView) {
+    public void setView(JPanel newView) {
         if (newView == null) throw new IllegalArgumentException("New view is null");
-        if (currentView != null) remove(currentView.getComponent());
+        if (currentView != null) remove(currentView);
         currentView = newView;
-        add(currentView.getComponent());
+        add(currentView);
         repaint();
         pack();
     }
 
-    @Override
-    public View getCurrentView() {
+    public JPanel getCurrentView() {
         return currentView;
     }
 
-    @Override
     public void displayErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }

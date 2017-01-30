@@ -1,5 +1,6 @@
 package com.jensen.game.othello.model;
 
+import com.jensen.game.exception.UnknownStatusException;
 import com.jensen.game.inteface.Game;
 import com.jensen.game.model.*;
 
@@ -16,14 +17,33 @@ public class OthelloModel implements Game {
     private Deque<String> messageQueue = new LinkedList<String>();
     private Cell latestMove;
 
-    public OthelloModel(String[] playerNames, int width, int height) {
-        initPlayers(playerNames);
+    public OthelloModel(int width, int height, String type, String diff) {
+        initPlayers();
         initBoard(width, height);
 
         randomPlayer();
 
-        players[0].setComputerControlled(Difficulty.NORMAL);
-        players[1].setComputerControlled(Difficulty.EASY);
+        switch (type.toLowerCase()) {
+            case "human":
+                break;
+            case "computer":
+            default:
+                Difficulty difficulty;
+
+                switch (diff.toLowerCase()) {
+                    case "easy":
+                        difficulty = Difficulty.EASY;
+                        break;
+                    case "normal":
+                    case "hard":
+                    default:
+                        difficulty = Difficulty.NORMAL;
+                        break;
+                }
+
+                players[0].setComputerControlled(difficulty);
+                break;
+        }
 
         prepareNextTurn();
     }
@@ -40,19 +60,16 @@ public class OthelloModel implements Game {
 
     /**
      * Initiates players.
-     *
-     * @param playerNames The names of the players.
      */
-    private void initPlayers(String[] playerNames) {
-        players = new OthelloPlayer[playerNames.length];
+    private void initPlayers() {
+        players = new OthelloPlayer[2];
 
         PieceColor[] colors = PieceColor.values();
 
-        for (int i = 0; i < playerNames.length; i++) {
-            String name = playerNames[i];
+        for (int i = 0; i < players.length; i++) {
             PieceColor color = colors[i];
 
-            players[i] = new OthelloPlayer(name, color);
+            players[i] = new OthelloPlayer(String.valueOf(i), color);
         }
     }
 
@@ -71,7 +88,7 @@ public class OthelloModel implements Game {
 
         int flips = OthelloBoard.makeMove(player, x, y, board);
         latestMove = board.getCell(x, y);
-        addMessage(player.getName() + " flipped " + flips + " disks.");
+        addMessage(player.getColor() + " flipped " + flips + " disks.");
 
         prepareNextTurn();
 
@@ -96,7 +113,7 @@ public class OthelloModel implements Game {
             prepareNextTurn();
         }
 
-        addMessage(player.getName() + "s' (" + player.getColor().toString().toLowerCase() + ") turn!");
+        addMessage(player.getColor() + "s' turn!");
 
         if (player.isComputerControlled()) {
             Cell[] validMoves = OthelloBoard.getValidMoves(player, board);
@@ -140,7 +157,7 @@ public class OthelloModel implements Game {
             return "OBSTRUCTION";
         }
 
-        return ""; // throw Exception?
+        throw new UnknownStatusException();
     }
 
     /**

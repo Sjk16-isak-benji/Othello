@@ -66,10 +66,7 @@ public class DefualtGameView extends JPanel implements GameView {
                 label.setHorizontalAlignment(JLabel.CENTER);
                 label.setOpaque(true);
                 label.setBackground(Color.WHITE);
-                label.setBorder(new CompoundBorder(
-                        new LineBorder(Color.BLACK, 1),
-                        new EmptyBorder(5, 5, 5, 5)
-                ));
+                label.setBorder(new LineBorder(Color.BLACK, 2));
                 cells[y][x] = label;
                 gridPanel.add(label);
             }

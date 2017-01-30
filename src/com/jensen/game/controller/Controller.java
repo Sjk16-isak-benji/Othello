@@ -4,11 +4,15 @@ import com.jensen.game.inteface.Display;
 import com.jensen.game.inteface.Game;
 import com.jensen.game.inteface.GameView;
 import com.jensen.game.inteface.View;
+import com.jensen.game.model.Difficulty;
 import com.jensen.game.model.GridPosition;
 import com.jensen.game.othello.model.OthelloModel;
 import com.jensen.game.othello.view.OthelloGameView;
+import com.jensen.game.view.GameSetupView;
 import com.jensen.game.view.MenuView;
+import com.jensen.game.view.Window;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -22,15 +26,16 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand().toLowerCase()) {
                 case "menu":
-                    initOthelloGame();
+                    displayMenu();
                     break;
-                case "play":
-                    // TODO switch view to game setup
+                case "othello":
+                    displayOthelloSetup();
+                    break;
                 case "continue":
                     // TODO create game model with user pref
-
+                    break;
                 default:
-                    System.out.println("Button fail: " + e.getActionCommand());;
+                    System.out.println("Button fail: " + e.getActionCommand());
             }
         }
     }
@@ -39,7 +44,7 @@ public class Controller {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            initOthelloGame();
         }
     }
 
@@ -49,7 +54,7 @@ public class Controller {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            mouseClick(e.getSource());
+            //mouseClick(e.getSource());
         }
 
         @Override
@@ -91,40 +96,56 @@ public class Controller {
         }
     }
 
-    private Display window;
+    private Window window;
+    private GameSetupView setupView;
     private GameView gameView;
     private Game game;
     private int width;
     private int height;
 
-    public Controller(Display window) {
+    public Controller(Window window) {
         this.window = window;
-        //displayMenu();
-        initOthelloGame();
+        displayMenu();
     }
 
     private void initOthelloGame() {
-        gameView = createOthelloView();
+        height = width = setupView.getBoardSize();
+        String type = setupView.getOpponentType();
+        String diff = setupView.getDifficulty();
+
+        game = new OthelloModel(width, height, type, diff);
+
+        gameView = new OthelloGameView(width, height);
         gameView.addGridListener(new GridListener());
         gameView.addMenuButtonListener(new MenuListener());
-        window.setView(gameView);
+        window.setView((JPanel) gameView);
         updateBoard();
         updateMessage();
     }
 
-    private void displayMenu() {
-        String[] games = { "Othello" };
-        View menu = new MenuView(games);
-        menu.addMenuButtonListener(new MenuListener());
-        this.window.setView(menu);
+    private void displayOthelloSetup() {
+        setupView = new GameSetupView();
+        setupView.showOpponentType(new String[] { "Human", "Computer" });
+
+        Difficulty[] difficulties = Difficulty.values();
+        String[] strings = new String[difficulties.length];
+
+        for (int i = 0; i < difficulties.length; i++) {
+            Difficulty difficulty = difficulties[i];
+            strings[i] = difficulty.toString();
+        }
+
+        setupView.showDifficulties(strings);
+        setupView.showBoardSize(8, 14, 2);
+        setupView.addListeners(new SetupListener());
+        window.setView(setupView);
     }
 
-    private GameView createOthelloView() {
-        String[] playerNames = { "Black", "White" };
-        width = 8;
-        height = 8;
-        game = new OthelloModel(playerNames, width, height);
-        return new OthelloGameView(width, height);
+    private void displayMenu() {
+        String[] games = { "Othello" };
+        MenuView menu = new MenuView(games);
+        menu.addListener(new MenuListener());
+        window.setView(menu);
     }
 
     private void updateBoard() {
@@ -139,7 +160,7 @@ public class Controller {
         String message;
         while ((message = game.getMessage()) != null) {
             // TODO delay between messages
-            window.getCurrentView().updateMessage(message);
+            gameView.updateMessage(message);
         }
     }
 
