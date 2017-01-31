@@ -32,6 +32,8 @@ public class Controller {
                 case "continue":
                     displayGameView();
                     break;
+                case "exit":
+                    window.dispose();
                 default:
                     System.out.println("Button fail: " + e.getActionCommand());
             }
