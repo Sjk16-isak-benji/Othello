@@ -24,7 +24,7 @@ public abstract class OthelloImages {
     }
 
     public static Image getObstruction() {
-        // TODO
+        // TODO Implement obstuction image
         throw new NotImplementedException();
     }
 }
