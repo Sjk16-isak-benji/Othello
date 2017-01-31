@@ -1,6 +1,11 @@
 package com.jensen.game.othello.model;
 
-import com.jensen.game.model.*;
+import com.jensen.game.model.Board;
+import com.jensen.game.model.Cell;
+import com.jensen.game.model.Direction;
+import com.jensen.game.model.GridPosition;
+import com.jensen.game.model.Piece;
+import com.jensen.game.model.PieceColor;
 
 /**
  * A helper class, exclusively consisting of static method, with methods related to an othello game board.
@@ -58,11 +63,11 @@ public class OthelloBoard {
     }
 
     /**
-     * TODO
+     * Returns true if a specific player has atleast one valid move on the given board.
      *
-     * @param player
-     * @param board
-     * @return
+     * @param player The player to check if it has valid moves.
+     * @param board  The Board on which to check if the playes has any valid moves.
+     * @return True if the player has atleast one move otherwise false.
      */
     public static boolean hasValidMoves(OthelloPlayer player, Board board) {
         return OthelloBoard.getValidMoves(player, board).length > 0;
@@ -92,7 +97,14 @@ public class OthelloBoard {
     }
 
     /**
-     * TODO
+     * Checks if a specific player can place a piece at (x,y) on the board based on the given direction.
+     *
+     * @param player    The player.
+     * @param x         The column of the cell.
+     * @param y         The row of the cell.
+     * @param direction The direction in which to check if the move is valid.
+     * @param board     The game board.
+     * @return True if the move is valid in the specific direnction, otherwise false.
      */
     public static boolean isValidMove(OthelloPlayer player, int x, int y, Direction direction, Board board) {
         int gap = 0;
@@ -126,10 +138,10 @@ public class OthelloBoard {
     }
 
     /**
-     * TODO
+     * Return true if the cell is in a corner of its board.
      *
-     * @param cell
-     * @return
+     * @param cell The cell.
+     * @return True if in a corner, otherwise false.
      */
     public static boolean isInCorner(Cell cell) {
         int adjacentOutOfBounds = 0;
@@ -146,10 +158,10 @@ public class OthelloBoard {
     }
 
     /**
-     * TODO
+     * Return true if the cell is on the edge of its board.
      *
-     * @param cell
-     * @return
+     * @param cell The cell.
+     * @return True if the cell is on a edge, otherwise false.
      */
     public static boolean isNextToEdge(Cell cell) {
         for (Direction direction : Direction.values()) {
@@ -164,13 +176,13 @@ public class OthelloBoard {
     }
 
     /**
-     * TODO
+     * Preforms a move and returns the number of pieces that the player flipped.
      *
-     * @param player
-     * @param x
-     * @param y
-     * @param board
-     * @return
+     * @param player The player making the move.
+     * @param x      The column of the cell.
+     * @param y      The row of the cell.
+     * @param board  The game Board.
+     * @return The number of pieces that the player flipped.
      */
     public static int makeMove(OthelloPlayer player, int x, int y, Board board) {
         int flips = 0;
@@ -212,10 +224,10 @@ public class OthelloBoard {
     }
 
     /**
-     * TODO
+     * Counts and returns a string with the number of black and white pieces on a specific board.
      *
-     * @param board
-     * @return
+     * @param board The gam board.
+     * @return A string with the 'score'.
      */
     public static String getScore(Board board) {
         int black = 0;

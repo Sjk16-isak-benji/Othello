@@ -17,10 +17,10 @@ public enum Direction {
     private int horizontalStep;
 
     /**
-     * TODO
+     * Creates a direction with a horizontal step and a vertical step that defines the 'direction'.
      *
-     * @param verticalStep
-     * @param horizontalStep
+     * @param verticalStep The number of steps to take on the vertical plane.
+     * @param horizontalStep The number of steps to take on the horizontal plane.
      */
     Direction(int verticalStep, int horizontalStep) {
         this.verticalStep = verticalStep;
@@ -28,18 +28,18 @@ public enum Direction {
     }
 
     /**
-     * TODO
+     * Returns the number of vertical steps that defines the direction.
      *
-     * @return
+     * @return The number of vertical steps that defines the direction.
      */
     public int getVerticalStep() {
         return verticalStep;
     }
 
     /**
-     * TODO
+     * Returns the number of horizontal steps that defines the direction.
      *
-     * @return
+     * @return The number of horizontal steps that defines the direction.
      */
     public int getHorizontalStep() {
         return horizontalStep;

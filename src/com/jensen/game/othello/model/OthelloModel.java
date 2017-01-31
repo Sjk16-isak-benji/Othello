@@ -75,7 +75,7 @@ public class OthelloModel implements Game {
 
     @Override
     public boolean move(int x, int y) {
-         OthelloPlayer player = getCurrentPlayer();
+        OthelloPlayer player = getCurrentPlayer();
 
         if (OthelloBoard.isGameOver(players, board)) {
             return false;
@@ -96,13 +96,13 @@ public class OthelloModel implements Game {
     }
 
     /**
-     * TODO
+     * Switches to the next player with a valid move. If that player is computer controlled it perfomes the AI's move.
+     * Sets game over message if no player can make a move.
      */
     private void prepareNextTurn() {
         nextPlayer();
 
         if (OthelloBoard.isGameOver(players, board)) {
-            // TODO Check who won and add to or replace message
             addMessage("Game Over! (" + OthelloBoard.getScore(board) + ")");
             return;
         }
@@ -162,6 +162,7 @@ public class OthelloModel implements Game {
 
     /**
      * Gets and removes the first message from the message queue. Returns null if there are no messages.
+     *
      * @return A message.
      */
     @Override

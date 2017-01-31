@@ -33,7 +33,7 @@ public class OthelloPlayer extends Player {
     }
 
     /**
-     * TODO
+     * Sets this player to computer controlled and gives it an AI of desired difficulty.
      *
      * @param difficulty The difficulty of this player AI.
      */
