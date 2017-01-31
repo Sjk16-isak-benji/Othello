@@ -1,9 +1,7 @@
 package com.jensen.game.controller;
 
-import com.jensen.game.inteface.Display;
 import com.jensen.game.inteface.Game;
 import com.jensen.game.inteface.GameView;
-import com.jensen.game.inteface.View;
 import com.jensen.game.model.Difficulty;
 import com.jensen.game.model.GridPosition;
 import com.jensen.game.othello.model.OthelloModel;
@@ -32,7 +30,7 @@ public class Controller {
                     displayOthelloSetup();
                     break;
                 case "continue":
-                    // TODO create game model with user pref
+                    displayGameView();
                     break;
                 default:
                     System.out.println("Button fail: " + e.getActionCommand());
@@ -118,6 +116,10 @@ public class Controller {
         gameView = new OthelloGameView(width, height);
         gameView.addGridListener(new GridListener());
         gameView.addMenuButtonListener(new MenuListener());
+        displayGameView();
+    }
+
+    private void displayGameView() {
         window.setView((JPanel) gameView);
         updateBoard();
         updateMessage();
@@ -145,6 +147,11 @@ public class Controller {
         String[] games = { "Othello" };
         MenuView menu = new MenuView(games);
         menu.addListener(new MenuListener());
+
+        if (gameView != null) {
+            menu.showContinue();
+        }
+
         window.setView(menu);
     }
 
