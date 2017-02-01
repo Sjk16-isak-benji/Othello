@@ -34,6 +34,7 @@ public class Controller {
                     break;
                 case "exit":
                     window.dispose();
+                    break;
                 default:
                     System.out.println("Button fail: " + e.getActionCommand());
             }
