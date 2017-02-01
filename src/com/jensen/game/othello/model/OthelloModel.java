@@ -96,34 +96,6 @@ public class OthelloModel implements Game {
     }
 
     /**
-     * Switches to the next player with a valid move. If that player is computer controlled it perfomes the AI's move.
-     * Sets game over message if no player can make a move.
-     */
-    private void prepareNextTurn() {
-        nextPlayer();
-
-        if (OthelloBoard.isGameOver(players, board)) {
-            addMessage("Game Over! (" + OthelloBoard.getScore(board) + ")");
-            return;
-        }
-
-        OthelloPlayer player = getCurrentPlayer();
-
-        if (!OthelloBoard.hasValidMoves(player, board)) {
-            prepareNextTurn();
-        }
-
-        addMessage(player.getColor() + "s' turn!");
-
-        if (player.isComputerControlled()) {
-            Cell[] validMoves = OthelloBoard.getValidMoves(player, board);
-            Cell chosenMove = player.getAI().getMove(validMoves);
-            GridPosition movePosition = chosenMove.getPosition();
-            move(movePosition.getX(), movePosition.getY());
-        }
-    }
-
-    /**
      * Gets the status (content) of a board cell.
      *
      * @param x The column of the cell
@@ -171,6 +143,34 @@ public class OthelloModel implements Game {
             return messageQueue.pop();
         } catch (NoSuchElementException e) {
             return null;
+        }
+    }
+
+    /**
+     * Switches to the next player with a valid move. If that player is computer controlled it perfomes the AI's move.
+     * Sets game over message if no player can make a move.
+     */
+    private void prepareNextTurn() {
+        nextPlayer();
+
+        if (OthelloBoard.isGameOver(players, board)) {
+            addMessage("Game Over! (" + OthelloBoard.getScore(board) + ")");
+            return;
+        }
+
+        OthelloPlayer player = getCurrentPlayer();
+
+        if (!OthelloBoard.hasValidMoves(player, board)) {
+            prepareNextTurn();
+        }
+
+        addMessage(player.getColor() + "s' turn!");
+
+        if (player.isComputerControlled()) {
+            Cell[] validMoves = OthelloBoard.getValidMoves(player, board);
+            Cell chosenMove = player.getAI().getMove(validMoves);
+            GridPosition movePosition = chosenMove.getPosition();
+            move(movePosition.getX(), movePosition.getY());
         }
     }
 
