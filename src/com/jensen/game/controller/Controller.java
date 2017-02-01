@@ -87,7 +87,7 @@ public class Controller {
         private void mouseClick(Object source) {
             GridPosition pos = gameView.getPositionOf(source);
             if (pos != null) {
-                game.move(pos.getX(), pos.getY());
+                game.performAction(pos.getX(), pos.getY());
                 updateBoard();
             } else {
                 window.displayErrorMessage("Fatal mouse click!");

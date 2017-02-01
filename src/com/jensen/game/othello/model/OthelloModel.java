@@ -74,7 +74,7 @@ public class OthelloModel implements Game {
     }
 
     @Override
-    public boolean move(int x, int y) {
+    public boolean performAction(int x, int y) {
         OthelloPlayer player = getCurrentPlayer();
 
         if (OthelloBoard.isGameOver(players, board)) {
@@ -170,7 +170,7 @@ public class OthelloModel implements Game {
             Cell[] validMoves = OthelloBoard.getValidMoves(player, board);
             Cell chosenMove = player.getAI().getMove(validMoves);
             GridPosition movePosition = chosenMove.getPosition();
-            move(movePosition.getX(), movePosition.getY());
+            performAction(movePosition.getX(), movePosition.getY());
         }
     }
 
