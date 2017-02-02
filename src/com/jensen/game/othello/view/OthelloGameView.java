@@ -57,18 +57,18 @@ public class OthelloGameView extends DefualtGameView {
 
         switch (status) {
             case "VALID-WHITE":
-                StretchIcon image;
-                getCell(y, x).setBackground(VALID_COLOR);
-                image = new StretchIcon(OthelloImages.getWhiteTransDisk());
-                getCell(y, x).setIcon(image);
+                updateValidCell(x, y, new StretchIcon(OthelloImages.getWhiteTransDisk()));
                 break;
             case "VALID-BLACK":
-                getCell(y, x).setBackground(VALID_COLOR);
-                image = new StretchIcon(OthelloImages.getBlackTransDisk());
-                getCell(y, x).setIcon(image);
+                updateValidCell(x, y, new StretchIcon(OthelloImages.getBlackTransDisk()));
                 break;
             default:
         }
 
+    }
+
+    private void updateValidCell(int x, int y, StretchIcon image) {
+        getCell(y, x).setBackground(VALID_COLOR);
+        getCell(y, x).setIcon(image);
     }
 }
