@@ -4,6 +4,7 @@ import com.jensen.game.othello.resource.OthelloImages;
 import com.jensen.game.view.DefualtGameView;
 import com.jensen.game.view.StretchIcon;
 
+import javax.swing.JLabel;
 import java.awt.Color;
 
 /**
@@ -28,17 +29,16 @@ public class OthelloGameView extends DefualtGameView {
     @Override
     public void updateCell(int x, int y, String status) {
         StretchIcon image;
-
-        getCell(y, x).setBackground(STANDARD_COLOR);
+        Color bgColor = STANDARD_COLOR;
 
         switch (status) {
             case "LATEST-WHITE":
-                getCell(y, x).setBackground(LATEST_PLACED_COLOR);
+                bgColor = LATEST_PLACED_COLOR;
             case "WHITE":
                 image = new StretchIcon(OthelloImages.getWhiteDisk());
                 break;
             case "LATEST-BLACK":
-                getCell(y, x).setBackground(LATEST_PLACED_COLOR);
+                bgColor = LATEST_PLACED_COLOR;
             case "BLACK":
                 image = new StretchIcon(OthelloImages.getBlackDisk());
                 break;
@@ -49,26 +49,29 @@ public class OthelloGameView extends DefualtGameView {
                 image = null;
         }
 
-        getCell(y, x).setIcon(image);
+        updateCell(x, y, bgColor, image);
     }
 
     @Override
     public void mouseEnteredCell(int x, int y, String status) {
+        Color bgColor = VALID_COLOR;
 
         switch (status) {
             case "VALID-WHITE":
-                updateValidCell(x, y, new StretchIcon(OthelloImages.getWhiteTransDisk()));
+                updateCell(x, y, bgColor, new StretchIcon(OthelloImages.getWhiteTransDisk()));
                 break;
             case "VALID-BLACK":
-                updateValidCell(x, y, new StretchIcon(OthelloImages.getBlackTransDisk()));
+                updateCell(x, y, bgColor, new StretchIcon(OthelloImages.getBlackTransDisk()));
                 break;
             default:
         }
 
     }
 
-    private void updateValidCell(int x, int y, StretchIcon image) {
-        getCell(y, x).setBackground(VALID_COLOR);
-        getCell(y, x).setIcon(image);
+    private void updateCell(int x, int y, Color bgColor, StretchIcon image) {
+        JLabel cell = getCell(y, x);
+        cell.setBackground(bgColor);
+        cell.setIcon(image);
     }
+
 }
