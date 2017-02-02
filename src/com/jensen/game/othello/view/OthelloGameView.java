@@ -15,7 +15,7 @@ import java.awt.Color;
 public class OthelloGameView extends DefualtGameView {
 
     private final Color STANDARD_COLOR = Color.getHSBColor(0.3305556f, 1.0f, 0.74f);
-    private final Color LATEST_PLACED_COLOR = Color.YELLOW;
+    private final Color LATEST_PLACED_COLOR = Color.BLUE;
     private final Color VALID_COLOR = Color.GREEN;
 
     /**
@@ -23,47 +23,30 @@ public class OthelloGameView extends DefualtGameView {
      */
     public OthelloGameView(int width, int height) {
         super("Othello", width, height);
-        setColor(width, height);
-    }
-
-    private void setColor(int width, int height) {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                getCell(i, j).setBackground(STANDARD_COLOR);
-            }
-        }
     }
 
     @Override
     public void updateCell(int x, int y, String status) {
         StretchIcon image;
 
-        if(status.contains("VALID")) {
-            status = "";
-        }
-
-        if (status.contains("LATEST")) {
-            status = status.replace("LATEST-", "");
-            getCell(y, x).setBackground(LATEST_PLACED_COLOR);
-        } else {
-            getCell(y, x).setBackground(STANDARD_COLOR);
-        }
+        getCell(y, x).setBackground(STANDARD_COLOR);
 
         switch (status) {
+            case "LATEST-WHITE":
+                getCell(y, x).setBackground(LATEST_PLACED_COLOR);
             case "WHITE":
                 image = new StretchIcon(OthelloImages.getWhiteDisk());
                 break;
+            case "LATEST-BLACK":
+                getCell(y, x).setBackground(LATEST_PLACED_COLOR);
             case "BLACK":
                 image = new StretchIcon(OthelloImages.getBlackDisk());
                 break;
             case "OBSTRUCTION":
                 image = new StretchIcon(OthelloImages.getObstruction());
                 break;
-            case "":
-                image = null;
-                break;
             default:
-                throw new IllegalArgumentException("Unknown status.");
+                image = null;
         }
 
         getCell(y, x).setIcon(image);
@@ -71,22 +54,21 @@ public class OthelloGameView extends DefualtGameView {
 
     @Override
     public void mouseEnteredCell(int x, int y, String status) {
-        if (status.contains("VALID")) {
-            StretchIcon image;
-            getCell(y, x).setBackground(VALID_COLOR);
 
-            switch (status) {
-                case "VALID-WHITE":
-                    image = new StretchIcon(OthelloImages.getWhiteTransDisk());
-                    break;
-                case "VALID-BLACK":
-                    image = new StretchIcon(OthelloImages.getBlackTransDisk());
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unknown status.");
-            }
-
-            getCell(y, x).setIcon(image);
+        switch (status) {
+            case "VALID-WHITE":
+                StretchIcon image;
+                getCell(y, x).setBackground(VALID_COLOR);
+                image = new StretchIcon(OthelloImages.getWhiteTransDisk());
+                getCell(y, x).setIcon(image);
+                break;
+            case "VALID-BLACK":
+                getCell(y, x).setBackground(VALID_COLOR);
+                image = new StretchIcon(OthelloImages.getBlackTransDisk());
+                getCell(y, x).setIcon(image);
+                break;
+            default:
         }
+
     }
 }
