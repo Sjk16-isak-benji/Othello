@@ -95,6 +95,16 @@ public class OthelloModel implements Game {
         return true;
     }
 
+    @Override
+    public boolean performAlternativeAction(int x, int y) {
+        return false;
+    }
+
+    @Override
+    public boolean isValid(int x, int y) {
+        return OthelloBoard.isValidMove(getCurrentPlayer(), x, y, board);
+    }
+
     /**
      * Gets the status (content) of a board cell.
      *
@@ -106,7 +116,7 @@ public class OthelloModel implements Game {
     public String getStatus(int x, int y) {
         Cell cell = board.getCell(x, y);
 
-        if (OthelloBoard.isValidMove(getCurrentPlayer(), x, y, board)) {
+        if (isValid(x, y)) {
             return "VALID-" + getCurrentPlayer().getColor();
         }
 
@@ -130,6 +140,12 @@ public class OthelloModel implements Game {
         }
 
         throw new UnknownStatusException();
+    }
+
+    @Override
+    public GridPosition[] getChangedCellPositions() {
+        // TODO Implement getChangedCellPositions()
+        return new GridPosition[0];
     }
 
     /**

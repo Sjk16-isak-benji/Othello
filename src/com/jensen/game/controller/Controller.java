@@ -73,15 +73,15 @@ public class Controller {
         @Override
         public void mouseEntered(MouseEvent e) {
             GridPosition pos = gameView.getPositionOf(e.getSource());
-            String status = game.getStatus(pos.getX(), pos.getY());
-            gameView.mouseEnteredCell(pos.getX(), pos.getY(), status);
+            int x = pos.getX();
+            int y = pos.getY();
+            gameView.mouseEnteredCell(x, y, game.getStatus(x, y));
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
             GridPosition pos = gameView.getPositionOf(e.getSource());
-            String status = game.getStatus(pos.getX(), pos.getY());
-            gameView.updateCell(pos.getX(), pos.getY(), status);
+            updateCell(pos.getX(), pos.getY());
         }
 
         private void mouseClick(Object source) {
@@ -161,9 +161,20 @@ public class Controller {
     private void updateBoard() {
         for (int row = 0; row < width; row++) {
             for (int column = 0; column < height; column++) {
-                gameView.updateCell(column, row, game.getStatus(column, row));
+                updateCell(column, row);
             }
         }
+    }
+
+    private void updateChangedCells() {
+        GridPosition[] positions = game.getChangedCellPositions();
+        for (GridPosition pos: positions) {
+            updateCell(pos.getX(), pos.getY());
+        }
+    }
+
+    private void updateCell(int x, int y) {
+        gameView.updateCell(x, y, game.getStatus(x, y));
     }
 
     private void updateMessage() {
