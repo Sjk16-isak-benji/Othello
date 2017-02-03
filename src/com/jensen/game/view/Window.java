@@ -27,8 +27,11 @@ public class Window extends JFrame {
         if (currentView != null) remove(currentView);
         currentView = newView;
         add(currentView);
+        setVisible(false);
         repaint();
         pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     public JPanel getCurrentView() {
