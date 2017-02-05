@@ -96,6 +96,7 @@ public class SwingView implements SingleView {
 
     @Override
     public Map<String, GameOption> getOptions() {
+        // TODO switch case with game name as key to create a map with nec. info.
         return null;
     }
 
