@@ -26,23 +26,23 @@ public class SwingView implements SingleView {
 
     public SwingView() {
         window = new Window();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     @Override
     public void changeViewTo(String viewName) throws NoSuchViewFoundException {
         // TODO switch case with all available views
-        switch (viewName.toUpperCase()) {
-            case "MENU":
+        switch (viewName.toLowerCase()) {
+            case "menu":
                 displayMenu();
                 break;
-            case "OTHELLO_SETUP":
+            case "othello_setup":
                 displayOthelloSetup();
                 break;
-            case "OTHELLO":
+            case "othello":
                 displayOthelloGame();
                 break;
-            case "ONGOING_GAME":
+            case "ongoing_game":
                 continuGame();
                 break;
 
@@ -75,7 +75,7 @@ public class SwingView implements SingleView {
         if (isPlaying()) {
            return game.getPositionOf(o);
         }
-
+        // TODO change exception
         throw new NullPointerException("Not Playing");
     }
 
@@ -104,7 +104,7 @@ public class SwingView implements SingleView {
     @Override
     public Map<String, GameOption> getOptions() {
         // TODO switch case with game name as key to create a map with nec. info.
-        // pass along to the view if it's a setup view
+        //  or pass along to the view if it's a setup view
         Map<String, GameOption> map = new HashMap<String, GameOption>();
         map.put("name", new GameOption<>("gameName", "Othello"));
         map.put("size", new GameOption<>("size", setupView.getBoardSize()));
@@ -147,6 +147,7 @@ public class SwingView implements SingleView {
 
     private void displayOthelloGame() {
         // TODO make generic game view creation
+        // switch case on setup name defualt creates a DefualtGameView
         int size = (int) settings.get("size").getValue();
         game = new OthelloGameView(size, size);
         game.addGridListener(gridListener);
