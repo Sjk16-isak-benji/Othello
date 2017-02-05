@@ -1,20 +1,16 @@
 package com.jensen.game.controller;
 
+import com.jensen.game.exception.NoSuchViewFoundException;
 import com.jensen.game.inteface.Game;
-import com.jensen.game.inteface.GameView;
-import com.jensen.game.model.Difficulty;
+import com.jensen.game.inteface.SingleView;
 import com.jensen.game.model.GridPosition;
 import com.jensen.game.othello.model.OthelloModel;
-import com.jensen.game.othello.view.OthelloGameView;
-import com.jensen.game.view.GameSetupView;
-import com.jensen.game.view.MenuView;
-import com.jensen.game.view.Window;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Map;
 
 public class Controller {
 
@@ -24,16 +20,16 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand().toLowerCase()) {
                 case "menu":
-                    displayMenu();
+                    displayView("MENU");
                     break;
                 case "othello":
-                    displayOthelloSetup();
+                    displayView("OTHELLO_SETUP");
                     break;
                 case "continue":
-                    displayGameView();
+                    displayView("ONGOING_GAME");
                     break;
                 case "exit":
-                    window.dispose();
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Button fail: " + e.getActionCommand());
@@ -45,7 +41,13 @@ public class Controller {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            initOthelloGame();
+            switch (e.getActionCommand().toLowerCase()) {
+                case "done":
+                    initGame();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -72,43 +74,64 @@ public class Controller {
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            GridPosition pos = gameView.getPositionOf(e.getSource());
+            GridPosition pos = view.getPositionOf(e.getSource());
             String status = game.getStatus(pos.getX(), pos.getY());
-            gameView.mouseEnteredCell(pos.getX(), pos.getY(), status);
+            view.mouseEnteredCell(pos.getX(), pos.getY(), status);
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            GridPosition pos = gameView.getPositionOf(e.getSource());
+            GridPosition pos = view.getPositionOf(e.getSource());
             String status = game.getStatus(pos.getX(), pos.getY());
-            gameView.updateCell(pos.getX(), pos.getY(), status);
+            view.updateCell(pos.getX(), pos.getY(), status);
         }
 
         private void mouseClick(Object source) {
-            GridPosition pos = gameView.getPositionOf(source);
+            GridPosition pos = view.getPositionOf(source);
             if (pos != null) {
                 game.move(pos.getX(), pos.getY());
                 updateBoard();
             } else {
-                window.displayErrorMessage("Fatal mouse click!");
+                view.displayErrorMessage("Fatal mouse click!");
             }
 
             updateMessage();
         }
     }
 
-    private Window window;
-    private GameSetupView setupView;
-    private GameView gameView;
+    private SingleView view;
     private Game game;
     private int width;
     private int height;
 
-    public Controller(Window window) {
-        this.window = window;
-        displayMenu();
+    public Controller(SingleView view) {
+        this.view = view;
+        view.setMenuListener(new MenuListener());
+        view.setSetupListener(new SetupListener());
+        view.setGridListener(new GridListener());
+        displayView("MENU");
     }
 
+    private void displayView(String viewName) {
+        try {
+            view.changeViewTo(viewName);
+        } catch (NoSuchViewFoundException e) {
+            view.displayErrorMessage(e.getMessage());
+        }
+    }
+
+    private void initGame() {
+        Map<String, GameOption> settings = view.getOptions();
+        // TODO implement GameFactory
+        //game = GameFactory.getGame(settings);
+        //displayView(settings.get("name").getName());
+        width = height = (int) settings.get("size").getValue();
+        game = new OthelloModel(width, height, (String) settings.get("opponent").getValue(), (String) settings.get("difficulty").getValue());
+        displayView(((String) settings.get("name").getValue()).toUpperCase());
+        updateBoard();
+        updateMessage();
+    }
+/*
     private void initOthelloGame() {
         height = width = setupView.getBoardSize();
         String type = setupView.getOpponentType();
@@ -156,12 +179,12 @@ public class Controller {
         }
 
         window.setView(menu);
-    }
+    }*/
 
     private void updateBoard() {
         for (int row = 0; row < width; row++) {
             for (int column = 0; column < height; column++) {
-                gameView.updateCell(column, row, game.getStatus(column, row));
+                view.updateCell(column, row, game.getStatus(column, row));
             }
         }
     }
@@ -170,7 +193,7 @@ public class Controller {
         String message;
         while ((message = game.getMessage()) != null) {
             // TODO delay between messages
-            gameView.updateMessage(message);
+            view.updateMessage(message);
         }
     }
 

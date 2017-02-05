@@ -1,6 +1,7 @@
 package com.jensen.game.inteface;
 
 import com.jensen.game.controller.GameOption;
+import com.jensen.game.exception.NoSuchViewFoundException;
 import com.jensen.game.model.GridPosition;
 
 import java.awt.event.ActionListener;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public interface SingleView {
 
-    void changeViewTo(String viewName);
+    void changeViewTo(String viewName) throws NoSuchViewFoundException;
 
     void displayErrorMessage(String msg);
 
