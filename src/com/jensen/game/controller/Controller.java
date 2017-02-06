@@ -1,8 +1,8 @@
 package com.jensen.game.controller;
 
-import com.jensen.game.exception.NoSuchViewFoundException;
 import com.jensen.game.inteface.Game;
 import com.jensen.game.inteface.SingleView;
+import com.jensen.game.model.Difficulty;
 import com.jensen.game.model.GridPosition;
 import com.jensen.game.othello.model.OthelloModel;
 
@@ -12,6 +12,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Map;
 
+/**
+ * TODO
+ */
 public class Controller {
 
     public class MenuListener implements ActionListener {
@@ -20,16 +23,18 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand().toLowerCase()) {
                 case "menu":
-                    displayView("MENU");
+                    view.displayMenu(new String[] { "Othello" });
                     break;
                 case "othello":
-                    displayView("OTHELLO_SETUP");
+                    view.displaySetup("othello", new int[] { 8, 14, 2 }, new String[] { "Human", "Computer" },
+                            new String[] { Difficulty.EASY.toString(), Difficulty.NORMAL.toString(), Difficulty.HARD.toString() },
+                            null);
                     break;
                 case "continue":
-                    displayView("ONGOING_GAME");
+                    view.continuGame();
                     break;
                 case "exit":
-                    System.exit(0);
+                    view.quit();
                     break;
                 default:
                     System.out.println("Button fail: " + e.getActionCommand());
@@ -104,22 +109,22 @@ public class Controller {
     private int width;
     private int height;
 
+    /**
+     * TODO
+     *
+     * @param view
+     */
     public Controller(SingleView view) {
         this.view = view;
         view.setMenuListener(new MenuListener());
         view.setSetupListener(new SetupListener());
         view.setGridListener(new GridListener());
-        displayView("MENU");
+        view.displayMenu(new String[] { "Othello" });
     }
 
-    private void displayView(String viewName) {
-        try {
-            view.changeViewTo(viewName);
-        } catch (NoSuchViewFoundException e) {
-            view.displayErrorMessage(e.getMessage());
-        }
-    }
-
+    /**
+     * TODO
+     */
     private void initGame() {
         Map<String, GameOption> settings = view.getOptions();
         // TODO implement GameFactory
@@ -127,60 +132,14 @@ public class Controller {
         //displayView(settings.get("name").getName());
         width = height = (int) settings.get("size").getValue();
         game = new OthelloModel(width, height, (String) settings.get("opponent").getValue(), (String) settings.get("difficulty").getValue());
-        displayView(((String) settings.get("name").getValue()).toUpperCase());
-        updateBoard();
-        updateMessage();
-    }
-/*
-    private void initOthelloGame() {
-        height = width = setupView.getBoardSize();
-        String type = setupView.getOpponentType();
-        String diff = setupView.getDifficulty();
-
-        game = new OthelloModel(width, height, type, diff);
-
-        gameView = new OthelloGameView(width, height);
-        gameView.addGridListener(new GridListener());
-        gameView.addMenuButtonListener(new MenuListener());
-        displayGameView();
-    }
-
-    private void displayGameView() {
-        window.setView((JPanel) gameView);
+        view.playGame((String) settings.get("name").getValue(), width, height);
         updateBoard();
         updateMessage();
     }
 
-    private void displayOthelloSetup() {
-        setupView = new GameSetupView();
-        setupView.showOpponentType(new String[] { "Human", "Computer" });
-
-        Difficulty[] difficulties = Difficulty.values();
-        String[] strings = new String[difficulties.length];
-
-        for (int i = 0; i < difficulties.length; i++) {
-            Difficulty difficulty = difficulties[i];
-            strings[i] = difficulty.toString();
-        }
-
-        setupView.showDifficulties(strings);
-        setupView.showBoardSize(8, 14, 2);
-        setupView.addListeners(new SetupListener());
-        window.setView(setupView);
-    }
-
-    private void displayMenu() {
-        String[] games = { "Othello" };
-        MenuView menu = new MenuView(games);
-        menu.addListener(new MenuListener());
-
-        if (gameView != null) {
-            menu.showContinue();
-        }
-
-        window.setView(menu);
-    }*/
-
+    /**
+     * TODO change to only update changed cells
+     */
     private void updateBoard() {
         for (int row = 0; row < width; row++) {
             for (int column = 0; column < height; column++) {
@@ -189,6 +148,9 @@ public class Controller {
         }
     }
 
+    /**
+     * TODO
+     */
     private void updateMessage() {
         String message;
         while ((message = game.getMessage()) != null) {
