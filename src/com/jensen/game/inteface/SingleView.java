@@ -1,17 +1,59 @@
 package com.jensen.game.inteface;
 
 import com.jensen.game.controller.GameOption;
-import com.jensen.game.exception.NoSuchViewFoundException;
 import com.jensen.game.model.GridPosition;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.Map;
 
+/**
+ * TODO
+ */
 public interface SingleView {
 
-    void changeViewTo(String viewName) throws NoSuchViewFoundException;
+    /**
+     * TODO
+     *
+     * @param games
+     */
+    void displayMenu(String[] games);
 
+    /**
+     * TODO
+     *
+     * @param name
+     * @param size
+     * @param opponentTypes
+     * @param difficulties
+     * @param playerCount
+     */
+    void displaySetup(String name, int[] size, String[] opponentTypes, String[] difficulties, int[] playerCount);
+
+    /**
+     * TODO
+     *
+     * @param name
+     * @param width
+     * @param height
+     */
+    void playGame(String name, int width, int height);
+
+    /**
+     * Switches the view to the ongoing game.
+     */
+    void continuGame();
+
+    /**
+     * Exits the application.
+     */
+    void quit();
+
+    /**
+     * Displays a error message to the user.
+     *
+     * @param msg
+     */
     void displayErrorMessage(String msg);
 
     /**
@@ -40,14 +82,39 @@ public interface SingleView {
      */
     GridPosition getPositionOf(Object o);
 
+    /**
+     * Updates a viewable message for the user.
+     *
+     * @param msg
+     */
     void updateMessage(String msg);
 
+    /**
+     * TODO
+     *
+     * @param l
+     */
     void setSetupListener(ActionListener l);
 
+    /**
+     * TODO
+     *
+     * @param l
+     */
     void setMenuListener(ActionListener l);
 
+    /**
+     * TODO
+     *
+     * @param l
+     */
     void setGridListener(MouseListener l);
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     Map<String, GameOption> getOptions();
 
 }
