@@ -21,7 +21,6 @@ public class SwingView implements SingleView {
     private GameView game;
     private GameSetupView setupView;
     private ActionListener menuListener;
-    private ActionListener setupListener;
     private MouseListener gridListener;
     private Map<String, GameOption> settings;
 
@@ -65,7 +64,7 @@ public class SwingView implements SingleView {
             setupView.showPlayerCount(playerCount[0], playerCount[1]);
         }
 
-        setupView.addListeners(setupListener);
+        setupView.addListeners(menuListener);
         window.setView(setupView);
     }
 
@@ -129,11 +128,6 @@ public class SwingView implements SingleView {
         if (isPlaying()) {
             game.updateMessage(msg);
         }
-    }
-
-    @Override
-    public void setSetupListener(ActionListener l) {
-        setupListener = l;
     }
 
     @Override

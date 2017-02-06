@@ -36,22 +36,11 @@ public class Controller {
                 case "exit":
                     view.quit();
                     break;
-                default:
-                    System.out.println("Button fail: " + e.getActionCommand());
-            }
-        }
-    }
-
-    public class SetupListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            switch (e.getActionCommand().toLowerCase()) {
                 case "done":
                     initGame();
                     break;
                 default:
-                    break;
+                    System.out.println("Button fail: " + e.getActionCommand());
             }
         }
     }
@@ -117,7 +106,6 @@ public class Controller {
     public Controller(SingleView view) {
         this.view = view;
         view.setMenuListener(new MenuListener());
-        view.setSetupListener(new SetupListener());
         view.setGridListener(new GridListener());
         view.displayMenu(new String[] { "Othello" });
     }

@@ -94,13 +94,6 @@ public interface SingleView {
      *
      * @param l
      */
-    void setSetupListener(ActionListener l);
-
-    /**
-     * TODO
-     *
-     * @param l
-     */
     void setMenuListener(ActionListener l);
 
     /**
