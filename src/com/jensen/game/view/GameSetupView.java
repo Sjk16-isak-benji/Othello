@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class GameSetupView extends JPanel {
 
     public static void main(String[] args) {
-        GameSetupView a = new GameSetupView();
+        GameSetupView a = new GameSetupView("acb");
         a.showDifficulties(new String[] { "Aaifhsio", "soifseo" });
         a.showOpponentType(new String[] { "afjei", "pohjrs" });
         a.showPlayerCount(5, 10);
@@ -22,6 +22,7 @@ public class GameSetupView extends JPanel {
         frame.setVisible(true);
     }
 
+    private String name;
     private JPanel centerPanel;
     private JButton startButton;
     private JComboBox difficultyComboBox;
@@ -29,7 +30,8 @@ public class GameSetupView extends JPanel {
     private JSpinner playerCountSpinner;
     private JSpinner boardSizeSpinner;
 
-    public GameSetupView() {
+    public GameSetupView(String name) {
+        this.name = name;
         setLayout(new BorderLayout(5, 5));
 
         initCenterPanel();
@@ -70,8 +72,11 @@ public class GameSetupView extends JPanel {
         centerPanel.add(panel);
     }
 
-    public String getDifficulty() {
-        return (String) difficultyComboBox.getSelectedItem();
+    public Object getDifficulty() {
+        if (difficultyComboBox == null) {
+            return null;
+        }
+        return difficultyComboBox.getSelectedItem();
     }
 
     public void showPlayerCount(int min, int max) {
@@ -87,8 +92,11 @@ public class GameSetupView extends JPanel {
         centerPanel.add(panel);
     }
 
-    public int getPlayerCount() {
-        return (int) playerCountSpinner.getModel().getValue();
+    public Object getPlayerCount() {
+        if (playerCountSpinner == null) {
+            return null;
+        }
+        return playerCountSpinner.getModel().getValue();
     }
 
     public void showOpponentType(String[] types) {
@@ -104,8 +112,11 @@ public class GameSetupView extends JPanel {
         centerPanel.add(panel);
     }
 
-    public String getOpponentType() {
-        return (String) opponentComboBox.getSelectedItem();
+    public Object getOpponentType() {
+        if (opponentComboBox == null) {
+            return null;
+        }
+        return opponentComboBox.getSelectedItem();
     }
 
     public void showBoardSize(int min, int max, int stepSize) {
@@ -121,8 +132,15 @@ public class GameSetupView extends JPanel {
         centerPanel.add(panel);
     }
 
-    public int getBoardSize() {
-        return (int) boardSizeSpinner.getModel().getValue();
+    public Object getBoardSize() {
+        if (boardSizeSpinner == null) {
+            return null;
+        }
+        return boardSizeSpinner.getModel().getValue();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void addListeners(ActionListener l) {

@@ -74,7 +74,7 @@ public class OthelloModel implements Game {
     }
 
     @Override
-    public boolean move(int x, int y) {
+    public boolean performAction(int x, int y) {
         OthelloPlayer player = getCurrentPlayer();
 
         if (OthelloBoard.isGameOver(players, board)) {
@@ -93,6 +93,73 @@ public class OthelloModel implements Game {
         prepareNextTurn();
 
         return true;
+    }
+
+    @Override
+    public boolean performAlternativeAction(int x, int y) {
+        return false;
+    }
+
+    @Override
+    public boolean isValid(int x, int y) {
+        return OthelloBoard.isValidMove(getCurrentPlayer(), x, y, board);
+    }
+
+    /**
+     * Gets the status (content) of a board cell.
+     *
+     * @param x The column of the cell
+     * @param y The row of the cell
+     * @return One of the following strings: "WHITE", "BLACK", "OBSTRUCTION", "" (empty string)
+     */
+    @Override
+    public String getStatus(int x, int y) {
+        Cell cell = board.getCell(x, y);
+
+        if (isValid(x, y)) {
+            return "VALID-" + getCurrentPlayer().getColor();
+        }
+
+        if (cell.isEmpty()) {
+            return "";
+        }
+
+        String latest = "";
+        if (cell.equals(latestMove)) {
+            latest = "LATEST-";
+        }
+
+        Piece piece = cell.getPiece();
+
+        if (piece instanceof Disk) {
+            return latest + ((Disk) piece).getColor();
+        }
+
+        if (piece instanceof Obstruction) {
+            return "OBSTRUCTION";
+        }
+
+        throw new UnknownStatusException();
+    }
+
+    @Override
+    public GridPosition[] getChangedCellPositions() {
+        // TODO Implement getChangedCellPositions()
+        return new GridPosition[0];
+    }
+
+    /**
+     * Gets and removes the first message from the message queue. Returns null if there are no messages.
+     *
+     * @return A message.
+     */
+    @Override
+    public String getMessage() {
+        try {
+            return messageQueue.pop();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     /**
@@ -119,58 +186,7 @@ public class OthelloModel implements Game {
             Cell[] validMoves = OthelloBoard.getValidMoves(player, board);
             Cell chosenMove = player.getAI().getMove(validMoves);
             GridPosition movePosition = chosenMove.getPosition();
-            move(movePosition.getX(), movePosition.getY());
-        }
-    }
-
-    /**
-     * Gets the status (content) of a board cell.
-     *
-     * @param x The column of the cell
-     * @param y The row of the cell
-     * @return One of the following strings: "WHITE", "BLACK", "OBSTRUCTION", "" (empty string)
-     */
-    @Override
-    public String getStatus(int x, int y) {
-        Cell cell = board.getCell(x, y);
-
-        if (OthelloBoard.isValidMove(getCurrentPlayer(), x, y, board)) {
-            return "VALID-" + getCurrentPlayer().getColor();
-        }
-
-        if (cell.isEmpty()) {
-            return "";
-        }
-
-        String latest = "";
-        if (cell.equals(latestMove)) {
-            latest = "LATEST-";
-        }
-
-        Piece piece = cell.getPiece();
-
-        if (piece instanceof Disk) {
-            return latest + ((Disk) piece).getColor();
-        }
-
-        if (piece instanceof Obstruction) {
-            return "OBSTRUCTION";
-        }
-
-        throw new UnknownStatusException();
-    }
-
-    /**
-     * Gets and removes the first message from the message queue. Returns null if there are no messages.
-     *
-     * @return A message.
-     */
-    @Override
-    public String getMessage() {
-        try {
-            return messageQueue.pop();
-        } catch (NoSuchElementException e) {
-            return null;
+            performAction(movePosition.getX(), movePosition.getY());
         }
     }
 
