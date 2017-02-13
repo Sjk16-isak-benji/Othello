@@ -134,6 +134,6 @@ public class Cell<T extends GamePiece> {
 
     @Override
     public boolean equals(Object obj) {
-        throw new NotImplementedException();
+        return this == obj;
     }
 }

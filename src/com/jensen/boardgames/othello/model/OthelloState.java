@@ -41,7 +41,12 @@ public class OthelloState implements GameState<OthelloBoard, OthelloPlayer> {
 
     @Override
     public OthelloState clone() {
-        throw new NotImplementedException();
+        OthelloState state = new OthelloState();
+        state.board = board.clone();
+        state.players = players;
+        state.currentPlayer = currentPlayer;
+
+        return state;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class Disk implements GamePiece {
 
     @Override
     public Disk clone() {
-        throw new NotImplementedException();
+        return new Disk(color);
     }
 
     @Override
