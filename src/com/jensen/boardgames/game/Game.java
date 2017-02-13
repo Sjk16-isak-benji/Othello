@@ -56,5 +56,4 @@ public interface Game {
      * @return The current message to display.
      */
     String getMessage();
-
 }
