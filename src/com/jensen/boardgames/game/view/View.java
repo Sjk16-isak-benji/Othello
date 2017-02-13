@@ -36,6 +36,4 @@ public interface View {
      * @see Component
      */
     Component getComponent();
-
-
 }

@@ -43,5 +43,4 @@ public interface GameView extends View {
      * @param l The mouse listener to be notified when the user interact with a game grid.
      */
     void addGridListener(MouseListener l);
-
 }

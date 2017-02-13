@@ -2,7 +2,6 @@ package com.jensen.boardgames.game.controller;
 
 import com.jensen.boardgames.game.Game;
 import com.jensen.boardgames.game.view.SingleView;
-import com.jensen.boardgames.game.util.Difficulty;
 import com.jensen.boardgames.game.model.board.GridPosition;
 import com.jensen.boardgames.othello.model.OthelloModel;
 
@@ -17,6 +16,9 @@ import java.util.Map;
  */
 public class Controller {
 
+    /**
+     * TODO
+     */
     public class MenuListener implements ActionListener {
 
         @Override
@@ -27,7 +29,7 @@ public class Controller {
                     break;
                 case "othello":
                     view.displaySetup("othello", new int[] { 8, 14, 2 }, new String[] { "Human", "Computer" },
-                            new String[] { Difficulty.EASY.toString(), Difficulty.NORMAL.toString(), Difficulty.HARD.toString() },
+                            new String[] { "Easy", "Normal", "Hard" }, // TODO no hardcoded difficulties
                             null);
                     break;
                 case "continue":
@@ -40,11 +42,15 @@ public class Controller {
                     initGame();
                     break;
                 default:
+                    // TODO throw exception
                     System.out.println("Button fail: " + e.getActionCommand());
             }
         }
     }
 
+    /**
+     * TODO
+     */
     public class GridListener implements MouseListener {
 
         private Object pressedSource;
@@ -126,9 +132,10 @@ public class Controller {
     }
 
     /**
-     * TODO change to only update changed cells
+     * TODO
      */
     private void updateBoard() {
+        // TODO only update changed cells
         for (int row = 0; row < width; row++) {
             for (int column = 0; column < height; column++) {
                 view.updateCell(column, row, game.getStatus(column, row));
@@ -146,5 +153,4 @@ public class Controller {
             view.updateMessage(message);
         }
     }
-
 }

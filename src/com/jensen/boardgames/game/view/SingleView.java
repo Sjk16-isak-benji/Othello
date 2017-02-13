@@ -109,5 +109,4 @@ public interface SingleView {
      * @return
      */
     Map<String, GameOption> getOptions();
-
 }

@@ -42,9 +42,6 @@ public class OthelloGameView extends DefualtGameView {
             case "BLACK":
                 image = new StretchIcon(OthelloImages.getBlackDisk());
                 break;
-            case "OBSTRUCTION":
-                image = new StretchIcon(OthelloImages.getObstruction());
-                break;
             default:
                 image = null;
         }
@@ -68,10 +65,17 @@ public class OthelloGameView extends DefualtGameView {
 
     }
 
+    /**
+     * TODO
+     *
+     * @param x
+     * @param y
+     * @param bgColor
+     * @param image
+     */
     private void updateCell(int x, int y, Color bgColor, StretchIcon image) {
         JLabel cell = getCell(y, x);
         cell.setBackground(bgColor);
         cell.setIcon(image);
     }
-
 }
