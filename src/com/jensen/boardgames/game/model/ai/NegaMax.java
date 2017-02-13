@@ -1,10 +1,20 @@
 package com.jensen.boardgames.game.model.ai;
 
-public abstract class NegaMax<S, M> implements MiniMax<S, M> {
+import com.jensen.boardgames.game.model.GameState;
+import com.jensen.boardgames.game.model.board.Move;
+
+/**
+ * A base class for AI using a variation of the minimax algorithm called Negamax.
+ *
+ * @param <S> The type of game state.
+ * @param <M> The type of move.
+ */
+public abstract class NegaMax<S extends GameState, M extends Move> extends MiniMax<S, M> {
 
     protected M bestMove;
 
-    protected int findBestMove(S state, boolean isMax, int depth) {
+    @Override
+    protected int getWeight(S state, boolean isMax, int depth) {
         if (isTerminal(state) || depth == 0) {
             int utility = evaluate(state);
 
@@ -25,7 +35,7 @@ public abstract class NegaMax<S, M> implements MiniMax<S, M> {
 
         for (M move : moves) {
             S childState = makeMove(state, move);
-            int weight = -findBestMove(childState, !isMax, depth - 1);
+            int weight = -getWeight(childState, !isMax, depth - 1);
 
             if (weight > maxWeight) {
                 maxWeight = weight;
@@ -36,18 +46,28 @@ public abstract class NegaMax<S, M> implements MiniMax<S, M> {
         return maxWeight;
     }
 
+    @Override
     public M getMove(S state) {
         return getMove(state, -1);
     }
 
+    @Override
     public M getMove(S state, int depth) {
-        findBestMove(state, true, depth);
+        bestMove = null;
+        getWeight(state, true, depth);
 
         return bestMove;
     }
 
+    @Override
     protected abstract S makeMove(S state, M move);
+
+    @Override
     protected abstract M[] getMoves(S state);
+
+    @Override
     protected abstract int evaluate(S state);
+
+    @Override
     protected abstract boolean isTerminal(S state);
 }
