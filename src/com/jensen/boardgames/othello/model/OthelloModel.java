@@ -165,7 +165,7 @@ public class OthelloModel extends OthelloState implements Game {
 
         OthelloPlayer player = getCurrentPlayer();
 
-        if (Othello.getValidMoves(this).length > 0) {
+        if (Othello.getValidMoves(this).length == 0) {
             prepareNextTurn();
         }
 
@@ -199,7 +199,7 @@ public class OthelloModel extends OthelloState implements Game {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
         setCurrentPlayer(players[currentPlayerIndex]);
 
-        if (Othello.getValidMoves(this).length > 0) {
+        if (Othello.getValidMoves(this).length == 0) {
             nextPlayer();
         }
 
@@ -219,7 +219,7 @@ public class OthelloModel extends OthelloState implements Game {
         currentPlayerIndex = new Random().nextInt(players.length);
         setCurrentPlayer(players[currentPlayerIndex]);
 
-        if (Othello.getValidMoves(this).length > 0) {
+        if (Othello.getValidMoves(this).length == 0) {
             nextPlayer();
         }
 

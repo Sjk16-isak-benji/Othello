@@ -2,7 +2,6 @@ package com.jensen.boardgames.game.controller;
 
 import com.jensen.boardgames.game.Game;
 import com.jensen.boardgames.game.view.SingleView;
-import com.jensen.boardgames.game.util.Difficulty;
 import com.jensen.boardgames.game.model.board.GridPosition;
 import com.jensen.boardgames.othello.model.OthelloModel;
 
@@ -27,7 +26,7 @@ public class Controller {
                     break;
                 case "othello":
                     view.displaySetup("othello", new int[] { 8, 14, 2 }, new String[] { "Human", "Computer" },
-                            new String[] { Difficulty.EASY.toString(), Difficulty.NORMAL.toString(), Difficulty.HARD.toString() },
+                            new String[] { "Easy", "Normal", "Hard" },
                             null);
                     break;
                 case "continue":
