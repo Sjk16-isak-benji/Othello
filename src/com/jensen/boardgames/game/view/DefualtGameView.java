@@ -112,6 +112,13 @@ public class DefualtGameView extends JPanel implements GameView {
         return panel;
     }
 
+    /**
+     * TODO
+     *
+     * @param row
+     * @param col
+     * @return
+     */
     protected JLabel getCell(int row, int col) {
         return cells[row][col];
     }

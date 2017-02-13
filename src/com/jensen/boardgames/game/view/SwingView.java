@@ -156,6 +156,11 @@ public class SwingView implements SingleView {
         return settings;
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     private boolean isPlaying() {
         return window.getCurrentView().equals(game);
     }

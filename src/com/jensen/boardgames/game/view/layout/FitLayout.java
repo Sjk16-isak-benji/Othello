@@ -2,7 +2,11 @@ package com.jensen.boardgames.game.view.layout;
 
 import java.awt.*;
 
+/**
+ * TODO
+ */
 public class FitLayout implements LayoutManager {
+
     @Override
     public void addLayoutComponent(String name, Component comp) {
         // TODO

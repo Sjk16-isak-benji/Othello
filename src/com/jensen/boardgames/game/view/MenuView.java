@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * TODO
+ */
 public class MenuView extends JPanel {
 
     public static void main(String[] args) {
@@ -18,6 +21,11 @@ public class MenuView extends JPanel {
     private JButton[] gameButtons;
     private JButton continueButton;
 
+    /**
+     * TODO
+     *
+     * @param games
+     */
     public MenuView(String[] games) {
         setLayout(new BorderLayout(5, 5));
 
@@ -25,6 +33,9 @@ public class MenuView extends JPanel {
         initExitPanel();
     }
 
+    /**
+     * TODO
+     */
     private void initExitPanel() {
         JPanel exitPanel = new JPanel();
         exitPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -35,6 +46,11 @@ public class MenuView extends JPanel {
         add(exitPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * TODO
+     *
+     * @param games
+     */
     private void initCenterPanel(String[] games) {
         JPanel centerPanelWrapper = new JPanel();
         centerPanelWrapper.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -59,10 +75,18 @@ public class MenuView extends JPanel {
         add(centerPanelWrapper);
     }
 
+    /**
+     * TODO
+     */
     public void showContinue() {
         continueButton.setVisible(true);
     }
 
+    /**
+     * TODO
+     *
+     * @param l
+     */
     public void addListener(ActionListener l) {
         continueButton.addActionListener(l);
         exitButton.addActionListener(l);

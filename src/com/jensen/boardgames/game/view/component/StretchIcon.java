@@ -4,7 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
+/**
+ * TODO
+ */
 public class StretchIcon extends ImageIcon {
+
     public StretchIcon(byte[] imageData) {
         super(imageData);
     }

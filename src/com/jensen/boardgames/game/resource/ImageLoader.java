@@ -7,6 +7,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A singleton resource loader for images, which can cache the images.
+ */
 public class ImageLoader implements ResourceLoader<Image> {
 
     private static ImageLoader instance;
@@ -14,6 +17,11 @@ public class ImageLoader implements ResourceLoader<Image> {
 
     private ImageLoader() {}
 
+    /**
+     * Gets the singleton instance.
+     *
+     * @return The instance.
+     */
     public static synchronized ImageLoader getInstance() {
         if (instance == null) {
             instance = new ImageLoader();
@@ -22,10 +30,23 @@ public class ImageLoader implements ResourceLoader<Image> {
         return instance;
     }
 
+    /**
+     * Loads an image.
+     *
+     * @param path The path of the image.
+     * @return An image.
+     */
     public Image load(String path) {
         return load(path, false);
     }
 
+    /**
+     * Loads an image and can cache it.
+     *
+     * @param path The path of the image.
+     * @param cache Determines whether the image should be cached.
+     * @return An image.
+     */
     public Image load(String path, boolean cache) {
         URL url = getClass().getResource(path);
 

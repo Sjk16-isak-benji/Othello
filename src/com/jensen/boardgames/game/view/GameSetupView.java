@@ -30,6 +30,11 @@ public class GameSetupView extends JPanel {
     private JSpinner playerCountSpinner;
     private JSpinner boardSizeSpinner;
 
+    /**
+     * TODO
+     *
+     * @param name
+     */
     public GameSetupView(String name) {
         this.name = name;
         setLayout(new BorderLayout(5, 5));
@@ -38,6 +43,9 @@ public class GameSetupView extends JPanel {
         initExitPanel();
     }
 
+    /**
+     * TODO
+     */
     private void initExitPanel() {
         JPanel startPanel = new JPanel();
         startPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -48,6 +56,9 @@ public class GameSetupView extends JPanel {
         add(startPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * TODO
+     */
     private void initCenterPanel() {
         JPanel centerPanelWrapper = new JPanel();
         centerPanelWrapper.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -59,6 +70,11 @@ public class GameSetupView extends JPanel {
         add(centerPanelWrapper);
     }
 
+    /**
+     * TODO
+     *
+     * @param difficulties
+     */
     public void showDifficulties(String[] difficulties) {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -72,6 +88,11 @@ public class GameSetupView extends JPanel {
         centerPanel.add(panel);
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public Object getDifficulty() {
         if (difficultyComboBox == null) {
             return null;
@@ -79,6 +100,12 @@ public class GameSetupView extends JPanel {
         return difficultyComboBox.getSelectedItem();
     }
 
+    /**
+     * TODO
+     *
+     * @param min
+     * @param max
+     */
     public void showPlayerCount(int min, int max) {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -92,6 +119,11 @@ public class GameSetupView extends JPanel {
         centerPanel.add(panel);
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public Object getPlayerCount() {
         if (playerCountSpinner == null) {
             return null;
@@ -99,6 +131,11 @@ public class GameSetupView extends JPanel {
         return playerCountSpinner.getModel().getValue();
     }
 
+    /**
+     * TODO
+     *
+     * @param types
+     */
     public void showOpponentType(String[] types) {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -112,6 +149,11 @@ public class GameSetupView extends JPanel {
         centerPanel.add(panel);
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public Object getOpponentType() {
         if (opponentComboBox == null) {
             return null;
@@ -119,6 +161,13 @@ public class GameSetupView extends JPanel {
         return opponentComboBox.getSelectedItem();
     }
 
+    /**
+     * TODO
+     *
+     * @param min
+     * @param max
+     * @param stepSize
+     */
     public void showBoardSize(int min, int max, int stepSize) {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -132,6 +181,11 @@ public class GameSetupView extends JPanel {
         centerPanel.add(panel);
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public Object getBoardSize() {
         if (boardSizeSpinner == null) {
             return null;
@@ -139,10 +193,20 @@ public class GameSetupView extends JPanel {
         return boardSizeSpinner.getModel().getValue();
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * TODO
+     *
+     * @param l
+     */
     public void addListeners(ActionListener l) {
         startButton.addActionListener(l);
     }
