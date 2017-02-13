@@ -1,60 +1,90 @@
 package com.jensen.boardgames.othello.model.ai;
 
+import com.jensen.boardgames.game.model.ai.EvaluationTable;
 import com.jensen.boardgames.game.model.board.Cell;
+import com.jensen.boardgames.game.model.board.GridPosition;
+import com.jensen.boardgames.game.util.CardinalDirection;
 import com.jensen.boardgames.game.util.Direction;
-import com.jensen.boardgames.game.model.board.Piece;
-import com.jensen.boardgames.othello.model.player.OthelloPlayer;
+import com.jensen.boardgames.othello.model.OthelloState;
 import com.jensen.boardgames.othello.model.board.Disk;
 import com.jensen.boardgames.othello.model.board.OthelloBoard;
+import com.jensen.boardgames.othello.model.player.OthelloPlayer;
 
+// TODO remake
+
+/**
+ * TODO
+ */
 public class OthelloCellWeightCalculator {
 
     private int cornerWeight;
     private int sideWeight;
     private int flipWeight;
 
+    /**
+     * TODO
+     *
+     * @param cornerWeight
+     * @param sideWeight
+     * @param flipWeight
+     */
     public OthelloCellWeightCalculator(int cornerWeight, int sideWeight, int flipWeight) {
         this.cornerWeight = cornerWeight;
         this.sideWeight = sideWeight;
         this.flipWeight = flipWeight;
     }
 
-    public int[] getWeights(Cell[] cells, OthelloPlayer player) {
-        int[] weights = new int[cells.length];
+    /**
+     * TODO
+     *
+     * @param state
+     * @return
+     */
+    public EvaluationTable getWeights(OthelloState state) {
+        OthelloBoard board = state.getBoard();
+        EvaluationTable weights = new EvaluationTable(board.getWidth(), board.getHeight());
 
-        for (int i = 0; i < cells.length; i++) {
-            Cell cell = cells[i];
+        for (int x = 0; x < board.getWidth(); x++) {
+            for (int y = 0; y < board.getHeight(); y++) {
+                GridPosition position = new GridPosition(x, y);
 
-            weights[i] = getWeight(cell, player);
+                Cell<Disk> cell = board.get(position);
+                weights.put(position, getWeight(cell, state.getCurrentPlayer()));
+            }
         }
 
         return weights;
     }
 
-    public int getWeight(Cell cell, OthelloPlayer player) {
+    /**
+     * TODO
+     *
+     * @param cell
+     * @param player
+     * @return
+     */
+    public int getWeight(Cell<Disk> cell, OthelloPlayer player) {
         int score = 0;
 
-        if (OthelloBoard.isInCorner(cell)) {
+        if (cell.isInCorner()) {
             score += cornerWeight;
-        } else if (OthelloBoard.isNextToEdge(cell)) {
+        } else if (cell.isNextToEdge()) {
             score += sideWeight;
         }
 
-        for (Direction direction : Direction.values()) {
-            Cell adjacentCell = cell;
+        for (Direction direction : CardinalDirection.values()) {
+            Cell<Disk> adjacentCell = cell;
 
             while ((adjacentCell = adjacentCell.getAdjacentCell(direction)) != null) {
                 if (adjacentCell.isEmpty()) {
                     continue;
                 }
 
-                Piece piece = adjacentCell.getPiece();
+                Disk disk = adjacentCell.getPiece();
 
-                if (!(piece instanceof Disk)) {
+                if (disk == null) {
                     continue;
                 }
-
-                Disk disk = (Disk) piece;
 
                 if (disk.getColor() == player.getColor()) {
                     continue;
