@@ -1,56 +1,39 @@
 package com.jensen.boardgames.game.model.player;
 
+import com.jensen.boardgames.game.model.GameState;
 import com.jensen.boardgames.game.model.ai.AI;
-import com.jensen.boardgames.game.util.Difficulty;
+import com.jensen.boardgames.game.model.board.Move;
 
 /**
- * A base class representing a player of a board game.
+ * An interface representing a player of a board game.
  */
-public abstract class Player {
-
-    private String name;
-    protected AI ai;
-
-    /**
-     * Creates a player with a specific name.
-     *
-     * @param name The name of the player.
-     */
-    public Player(String name) {
-        this.name = name;
-    }
+public interface Player<S extends GameState, M extends Move> {
 
     /**
      * Gets the name of the player.
      *
      * @return The name of the player.
      */
-    public String getName() {
-        return name;
-    }
+    String getName();
 
     /**
-     * Gets the object responsible for this players AI.
+     * Gets the AI of this player.
      *
-     * @return The AI object, or null if player is human.
+     * @return The AI of this player, or null if this player is human.
      */
-    public AI getAI() {
-        return ai;
-    }
+    AI<S, M> getAI();
 
     /**
      * Sets this player to be computer controlled.
      *
-     * @param difficulty The difficulty of this player AI.
+     * @param difficulty The difficulty of this players AI.
      */
-    public abstract void setComputerControlled(Difficulty difficulty);
+    void setComputerControlled(String difficulty); // TODO String?
 
     /**
      * Checks whether this player is computer controlled.
      *
      * @return A boolean indicating whether this player is computer controlled.
      */
-    public boolean isComputerControlled() {
-        return ai != null;
-    }
+    boolean isComputerControlled();
 }

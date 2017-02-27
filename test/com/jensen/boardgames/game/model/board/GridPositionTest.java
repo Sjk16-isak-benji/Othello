@@ -1,6 +1,5 @@
-package com.jensen.boardgames.othello.model.board;
+package com.jensen.boardgames.game.model.board;
 
-import com.jensen.boardgames.game.model.board.GridPosition;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

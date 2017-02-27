@@ -1,16 +1,20 @@
 package com.jensen.boardgames.othello.model.player;
 
-import com.jensen.boardgames.game.util.Difficulty;
-import com.jensen.boardgames.game.model.board.PieceColor;
+import com.jensen.boardgames.game.model.ai.AI;
 import com.jensen.boardgames.game.model.player.Player;
-import com.jensen.boardgames.othello.model.ai.AverageOthelloAI;
+import com.jensen.boardgames.othello.model.OthelloState;
+import com.jensen.boardgames.othello.model.board.DiskColor;
+import com.jensen.boardgames.othello.model.board.OthelloMove;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * A class representing a othello/reversi player.
  */
-public class OthelloPlayer extends Player {
+public class OthelloPlayer implements Player<OthelloState, OthelloMove> {
 
-    private PieceColor color;
+    private String name;
+    private AI<OthelloState, OthelloMove> ai;
+    private DiskColor color;
 
     /**
      * Creates a othello player which has a name and a color.
@@ -18,9 +22,8 @@ public class OthelloPlayer extends Player {
      * @param name  The name of this player.
      * @param color The color representing this player.
      */
-    public OthelloPlayer(String name, PieceColor color) {
-        super(name);
-
+    public OthelloPlayer(String name, DiskColor color) {
+        this.name = name;
         this.color = color;
     }
 
@@ -29,29 +32,54 @@ public class OthelloPlayer extends Player {
      *
      * @return The color of this player.
      */
-    public PieceColor getColor() {
+    public DiskColor getColor() {
         return color;
     }
 
-    /**
-     * Sets this player to computer controlled and gives it an AI of desired difficulty.
-     *
-     * @param difficulty The difficulty of this player AI.
-     */
     @Override
-    public void setComputerControlled(Difficulty difficulty) {
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public AI<OthelloState, OthelloMove> getAI() {
+        return ai;
+    }
+
+    @Override
+    public void setComputerControlled(String difficulty) {
         switch (difficulty) {
-            case EASY:
-                ai = new AverageOthelloAI(this);
-                break;
-            case NORMAL:
-                ai = new AverageOthelloAI(this);
-                break;
-            case HARD:
-                ai = new AverageOthelloAI(this);
-                break;
+            case "EASY":
+                throw new NotImplementedException();
+                //break;
+            case "NORMAL":
+                throw new NotImplementedException();
+                //break;
+            case "HARD":
+                throw new NotImplementedException();
+                //break;
             default:
                 throw new IllegalArgumentException("Unsupported difficulty");
         }
+    }
+
+    @Override
+    public boolean isComputerControlled() {
+        return ai != null;
+    }
+
+    @Override
+    public String toString() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public OthelloPlayer clone() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        throw new NotImplementedException();
     }
 }

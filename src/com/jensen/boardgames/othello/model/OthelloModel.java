@@ -3,11 +3,7 @@ package com.jensen.boardgames.othello.model;
 import com.jensen.boardgames.game.exception.UnknownStatusException;
 import com.jensen.boardgames.game.Game;
 import com.jensen.boardgames.game.model.board.*;
-import com.jensen.boardgames.game.util.Difficulty;
-import com.jensen.boardgames.othello.model.board.Disk;
-import com.jensen.boardgames.othello.model.board.Obstruction;
-import com.jensen.boardgames.othello.model.board.OthelloBoard;
-import com.jensen.boardgames.othello.model.board.OthelloBoardFactory;
+import com.jensen.boardgames.othello.model.board.*;
 import com.jensen.boardgames.othello.model.player.OthelloPlayer;
 
 import java.util.Deque;
@@ -15,10 +11,11 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-public class OthelloModel implements Game {
+/**
+ * TODO
+ */
+public class OthelloModel extends OthelloState implements Game {
 
-    private Board board;
-    private OthelloPlayer[] players;
     private int currentPlayerIndex;
     private Deque<String> messageQueue = new LinkedList<String>();
     private Cell latestMove;
@@ -34,20 +31,8 @@ public class OthelloModel implements Game {
                 break;
             case "computer":
             default:
-                Difficulty difficulty;
-
-                switch (diff.toLowerCase()) {
-                    case "easy":
-                        difficulty = Difficulty.EASY;
-                        break;
-                    case "normal":
-                    case "hard":
-                    default:
-                        difficulty = Difficulty.NORMAL;
-                        break;
-                }
-
-                players[0].setComputerControlled(difficulty);
+                // TODO allow for different difficulties in different games
+                players[0].setComputerControlled(diff.toUpperCase());
                 break;
         }
 
@@ -70,10 +55,10 @@ public class OthelloModel implements Game {
     private void initPlayers() {
         players = new OthelloPlayer[2];
 
-        PieceColor[] colors = PieceColor.values();
+        DiskColor[] colors = DiskColor.values();
 
         for (int i = 0; i < players.length; i++) {
-            PieceColor color = colors[i];
+            DiskColor color = colors[i];
 
             players[i] = new OthelloPlayer(String.valueOf(i), color);
         }
@@ -82,18 +67,20 @@ public class OthelloModel implements Game {
     @Override
     public boolean performAction(int x, int y) {
         OthelloPlayer player = getCurrentPlayer();
+        GridPosition position = new GridPosition(x, y);
+        OthelloMove move = new OthelloMove(position, getCurrentPlayer());
 
-        if (OthelloBoard.isGameOver(players, board)) {
+        if (Othello.isGameOver(this)) {
             return false;
         }
 
-        if (!OthelloBoard.isValidMove(player, x, y, board)) {
+        if (!Othello.isValidMove(this, move)) {
             addMessage("Invalid Move!");
             return false;
         }
 
-        int flips = OthelloBoard.makeMove(player, x, y, board);
-        latestMove = board.getCell(x, y);
+        int flips = Othello.makeMove(this, move);
+        latestMove = board.get(position);
         addMessage(player.getColor() + " flipped " + flips + " disks.");
 
         prepareNextTurn();
@@ -108,7 +95,7 @@ public class OthelloModel implements Game {
 
     @Override
     public boolean isValid(int x, int y) {
-        return OthelloBoard.isValidMove(getCurrentPlayer(), x, y, board);
+        return Othello.isValidMove(this, new OthelloMove(new GridPosition(x, y), getCurrentPlayer()));
     }
 
     /**
@@ -120,7 +107,7 @@ public class OthelloModel implements Game {
      */
     @Override
     public String getStatus(int x, int y) {
-        Cell cell = board.getCell(x, y);
+        Cell<Disk> cell = board.get(new GridPosition(x, y));
 
         if (isValid(x, y)) {
             return "VALID-" + getCurrentPlayer().getColor();
@@ -130,19 +117,15 @@ public class OthelloModel implements Game {
             return "";
         }
 
-        String latest = "";
-        if (cell.equals(latestMove)) {
-            latest = "LATEST-";
-        }
+        Disk disk = cell.getPiece();
 
-        Piece piece = cell.getPiece();
+        if (disk != null) {
+            String latest = "";
+            if (cell.equals(latestMove)) {
+                latest = "LATEST-";
+            }
 
-        if (piece instanceof Disk) {
-            return latest + ((Disk) piece).getColor();
-        }
-
-        if (piece instanceof Obstruction) {
-            return "OBSTRUCTION";
+            return latest + disk.getColor();
         }
 
         throw new UnknownStatusException();
@@ -150,7 +133,7 @@ public class OthelloModel implements Game {
 
     @Override
     public GridPosition[] getChangedCellPositions() {
-        // TODO Implement getChangedCellPositions()
+        // TODO Implement getChangedCellPositions() or use observable pattern
         return new GridPosition[0];
     }
 
@@ -175,23 +158,23 @@ public class OthelloModel implements Game {
     private void prepareNextTurn() {
         nextPlayer();
 
-        if (OthelloBoard.isGameOver(players, board)) {
-            addMessage("Game Over! (" + OthelloBoard.getScore(board) + ")");
+        if (Othello.isGameOver(this)) {
+            addMessage("Game Over! (" + Othello.getScore(this) + ")");
             return;
         }
 
         OthelloPlayer player = getCurrentPlayer();
 
-        if (!OthelloBoard.hasValidMoves(player, board)) {
+        if (Othello.getValidMoves(this).length == 0) {
             prepareNextTurn();
         }
 
         addMessage(player.getColor() + "s' turn!");
 
         if (player.isComputerControlled()) {
-            Cell[] validMoves = OthelloBoard.getValidMoves(player, board);
-            Cell chosenMove = player.getAI().getMove(validMoves);
-            GridPosition movePosition = chosenMove.getPosition();
+            // TODO clone state?
+            Move move = player.getAI().getMove(this);
+            GridPosition movePosition = move.getPosition();
             performAction(movePosition.getX(), movePosition.getY());
         }
     }
@@ -204,33 +187,23 @@ public class OthelloModel implements Game {
     }
 
     /**
-     * Gets the current active player.
-     *
-     * @return A player.
-     */
-    private OthelloPlayer getCurrentPlayer() {
-        return players[currentPlayerIndex];
-    }
-
-    /**
      * Switches to the next player.
      *
      * @return The next player.
      */
     private OthelloPlayer nextPlayer() {
-        if (OthelloBoard.isGameOver(players, board)) {
+        if (Othello.isGameOver(this)) {
             return null;
         }
 
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+        setCurrentPlayer(players[currentPlayerIndex]);
 
-        OthelloPlayer player = getCurrentPlayer();
-
-        if (!OthelloBoard.hasValidMoves(player, board)) {
+        if (Othello.getValidMoves(this).length == 0) {
             nextPlayer();
         }
 
-        return player;
+        return getCurrentPlayer();
     }
 
     /**
@@ -239,18 +212,17 @@ public class OthelloModel implements Game {
      * @return The chosen player.
      */
     private OthelloPlayer randomPlayer() {
-        if (OthelloBoard.isGameOver(players, board)) {
+        if (Othello.isGameOver(this)) {
             return null;
         }
 
         currentPlayerIndex = new Random().nextInt(players.length);
+        setCurrentPlayer(players[currentPlayerIndex]);
 
-        OthelloPlayer player = getCurrentPlayer();
-
-        if (!OthelloBoard.hasValidMoves(player, board)) {
+        if (Othello.getValidMoves(this).length == 0) {
             nextPlayer();
         }
 
-        return player;
+        return getCurrentPlayer();
     }
 }

@@ -1,12 +1,13 @@
 package com.jensen.boardgames.game.model.board;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * A class representing a general game board.
+ *
+ * @param <T> The type of the boards' game pieces.
  */
-public class Board {
-    private int width;
-    private int height;
-    private Cell[][] cells;
+public class Board<T extends GamePiece> extends Grid<Cell<T>> {
 
     /**
      * Creates a board with of a specific size.
@@ -15,94 +16,53 @@ public class Board {
      * @param height The height of the board.
      */
     public Board(int width, int height) {
-        if ((width == 0 || height == 0) && width != height) {
-            throw new IllegalArgumentException("Cannot not have only one side of size 0");
-        }
-
-        this.width = width;
-        this.height = height;
-
-        reset();
-    }
-
-    /**
-     * Resets all board cells.
-     */
-    private void reset() {
-        cells = new Cell[height][width];
+        super(width, height);
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                cells[y][x] = new Cell(this);
+                put(new GridPosition(x, y), new Cell<T>(this));
             }
         }
     }
 
     /**
-     * Gets the width of this board.
+     * Gets a graphical string representation of the board.
      *
-     * @return The width of this board.
+     * @return A string representation of the board.
      */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * Gets the height of this board.
-     *
-     * @return The height of this board.
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
-     * Gets all cells in this board in an one-dimensional array.
-     *
-     * @return Array of the cells in this board.
-     */
-    public Cell[] getCells() {
-        Cell[] cells = new Cell[width * height];
+    public String toTableString() {
+        String output = "";
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                cells[x * width + y] = getCell(x, y);
-            }
-        }
+                T item = get(new GridPosition(x, y)).getPiece();
+                char c = ' ';
 
-        return cells;
-    }
-
-    /**
-     * Gets a specific cell.
-     *
-     * @param x The column of the cell.
-     * @param y The row of the cell.
-     * @return The cell.
-     */
-    public Cell getCell(int x, int y) {
-        return cells[y][x];
-    }
-
-    /**
-     * Gets the position of a cell.
-     *
-     * @param cell The cell.
-     * @return The position.
-     */
-    public GridPosition positionOf(Cell cell) {
-        if (cell == null) {
-            throw new IllegalArgumentException("Argument 'cell' is null");
-        }
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (getCell(x, y).equals(cell)) {
-                    return new GridPosition(x, y);
+                if (item != null) {
+                    c = item.toRepresentativeChar();
                 }
+
+                output += String.format("%4s", c);
             }
+
+            output += "\n";
         }
 
-        throw new IllegalArgumentException("Cell not found");
+        return output;
+    }
+
+    @Override
+    public String toString() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Board<T> clone() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        throw new NotImplementedException();
     }
 }

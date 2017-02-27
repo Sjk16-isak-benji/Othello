@@ -1,9 +1,12 @@
 package com.jensen.boardgames.game.model.board;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * A class representing a position in a grid, so basically just a container of integer coordinates.
  */
 public class GridPosition {
+
     private int x;
     private int y;
 
@@ -38,6 +41,16 @@ public class GridPosition {
 
     @Override
     public String toString() {
-        return "(" + getX() + ", " + getY() + ")";
+        return getClass().getSimpleName() + "(x:" + getX() + ", y:" + getY() + ")";
+    }
+
+    @Override
+    public GridPosition clone() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        throw new NotImplementedException();
     }
 }
